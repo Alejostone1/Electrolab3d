@@ -1,77 +1,193 @@
-# ELECTROLAB 3D
+<p align="center">
+  <img src="docs/assets/banner.svg" alt="ELECTROLAB 3D" width="100%" />
+</p>
 
-Laboratorio virtual interactivo de circuitos **RLC en serie** y ecuaciones diferenciales lineales de segundo orden.
+<p align="center">
+  <a href="https://electrolab3d.vercel.app"><img alt="Demo" src="https://img.shields.io/badge/demo-en%20vivo-22D3EE?style=for-the-badge&logo=vercel&logoColor=white"></a>
+  <img alt="Pruebas" src="https://img.shields.io/badge/pruebas-41%20aprobadas-34D399?style=for-the-badge&logo=vitest&logoColor=white">
+  <img alt="React" src="https://img.shields.io/badge/React-18-38BDF8?style=for-the-badge&logo=react&logoColor=white">
+  <img alt="Three.js" src="https://img.shields.io/badge/Three.js-R3F-F1F5F9?style=for-the-badge&logo=threedotjs&logoColor=black">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+</p>
 
-> Proyecto final de **Matemáticas IV** · Profesor **Cristian C. Sánchez**
-> Alejandro Piedrahita · Daniel Colorado · Sebastián Patiño — Ingeniería de Sistemas y Telecomunicaciones, octavo semestre.
+<p align="center">
+  <b>Laboratorio virtual 3D para experimentar con circuitos RLC en serie<br/>y ver cómo una ecuación diferencial de segundo orden describe su comportamiento.</b>
+</p>
 
+---
+
+## 👥 Equipo
+
+| | Integrante | Rol en la sustentación |
+|:-:|---|---|
+| 🧑‍💻 | **Alejandro Piedrahita** | Introducción y modelo matemático |
+| 🧑‍💻 | **Daniel Colorado** | Componentes y simulación en vivo |
+| 🧑‍💻 | **Sebastián Patiño** | Análisis, aplicaciones y cierre |
+
+**Proyecto final de Matemáticas IV** · Profesor **Cristian C. Sánchez**
+Ingeniería de Sistemas y Telecomunicaciones · Octavo semestre
+
+---
+
+## ✨ Qué incluye
+
+| | Módulo | Qué puedes hacer |
+|:-:|---|---|
+| 🏠 | **Inicio** | Portada con el circuito 3D funcionando en vivo e indicadores |
+| 🔬 | **Laboratorio 3D** | Rotar, hacer zoom, seleccionar componentes, ver **rayos X** y **despiece interno**, encender, pausar y cambiar la velocidad |
+| 🎬 | **Presentación** | 15 diapositivas animadas en 3D para la sustentación: la cámara se acerca a cada componente y lo abre por dentro |
+| 📐 | **Centro matemático** | Resolución en 13 pasos generada con los valores reales + raíces en el plano complejo |
+| 📈 | **Gráficas** | q(t), i(t), voltajes, energía, comparación de los 3 regímenes, error de RK4 y exportación CSV |
+| 🧪 | **Experimentos** | 5 experimentos guiados con barridos de R, C, L y fuente; historial guardado |
+| 🏆 | **Desafíos** | *Predice antes de experimentar* + cuestionario con puntaje generado por el motor |
+| 📚 | **Aplicaciones** | Usos reales, analogía mecánica, formulario, glosario, unidades y referencias |
+
+🌗 **Modo claro y oscuro** en toda la aplicación · 📱 **Diseño responsive pensado primero para celular**
+
+---
+
+## 🧠 La idea central: todo sale de la ecuación
+
+$$L\,q''(t) + R\,q'(t) + \frac{1}{C}\,q(t) = E(t)$$
+
+Un solo resultado de simulación alimenta **todo** lo que se ve. Mover un slider cambia a la vez los cálculos, la clasificación, las gráficas y la animación 3D.
+
+```mermaid
+flowchart LR
+    A[🎚️ Parámetros<br/>L · R · C · E] --> B[✅ Validación<br/>Zod]
+    B --> C[🧮 Motor matemático]
+    C --> D[🏷️ Clasificación<br/>ζ = α/ω₀]
+    C --> E[📐 Solución analítica]
+    C --> F[🔁 Runge-Kutta 4]
+    E & F --> G[(Serie temporal<br/>q · i · V · energía)]
+    G --> H[🧊 Escena 3D]
+    G --> I[📈 Gráficas]
+    G --> J[📟 Indicadores]
+    G --> K[📐 Centro matemático]
 ```
-L q''(t) + R q'(t) + q(t)/C = E(t)
-```
 
-## Qué hace
+### Cómo la escena 3D refleja el motor
 
-| Módulo | Ruta | Contenido |
+| Componente 3D | Qué lo controla | Por dentro (despiece) |
 |---|---|---|
-| Inicio | `/` | Portada con escena 3D en funcionamiento, indicadores y acceso a módulos |
-| Laboratorio 3D | `/laboratorio` | Circuito 3D seleccionable, rayos X, despiece de cada componente, campos ilustrativos, reproducción, estados |
-| Experimentos | `/experimentos` | 5 experimentos guiados con barridos, tabla comparativa e historial local |
-| Centro matemático | `/matematicas` | Procedimiento de 13 pasos generado con los valores reales + raíces en el plano complejo |
-| Gráficas | `/graficas` | q(t), i(t), voltajes, energía, comparativa de los 3 regímenes, error RK4, exportación CSV |
-| Desafíos | `/desafios` | “Predice antes de experimentar” y cuestionario con puntuación generado por el motor |
-| Aplicaciones | `/aplicaciones` | Aplicaciones, analogía mecánica, conceptos, formulario, glosario, unidades y referencias |
-| Acerca | `/acerca` | Equipo, objetivos y arquitectura |
-| Presentación | `/presentacion` | Recorrido educativo 3D de 15 diapositivas para la sustentación (← → espacio, H, Esc) |
+| ⚡ Portadores en el cable | velocidad y sentido ∝ **i(t)** | — |
+| 🔋 Fuente | indicador y LED = **E(t)** | carcasa, cátodo MnO₂, separador, ánodo de zinc |
+| 🟫 Resistor | brillo térmico ∝ **P = R·i²**; bandas = valor real de R | recubrimiento, película de carbón en espiral, núcleo cerámico |
+| 🌀 Inductor | campo magnético ∝ **\|i(t)\|**; espiras según L | devanado de cobre, núcleo de ferrita, carrete |
+| ▮▮ Capacitor | cargas y campo eléctrico ∝ **q(t)/(C·E₀)** | placas, dieléctrico, carcasa |
 
-Tema claro y oscuro en toda la aplicación, diseño responsive pensado primero para celular.
+> Los campos son representaciones visuales simplificadas, no una simulación electromagnética completa.
 
-## Principio de diseño
+---
 
-Hay **un solo resultado de simulación** (`store/useLaboratorio.ts`). Al cambiar un parámetro:
+## 📊 Los tres comportamientos
 
-```
-parámetros → validación (Zod) → motor matemático → clasificación → soluciones (analítica + RK4)
-          → serie temporal → gráficas · animación 3D · indicadores · centro matemático
+```mermaid
+flowchart TD
+    R{"R comparada con<br/>R crítica = 2√(L/C)"} -->|R menor| S["🔵 Subamortiguado<br/>ζ menor que 1 · raíces complejas<br/>oscila y decae"]
+    R -->|R igual| CR["🟢 Crítico<br/>ζ = 1 · raíz doble<br/>equilibrio más rápido sin oscilar"]
+    R -->|R mayor| O["🟠 Sobreamortiguado<br/>ζ mayor que 1 · raíces reales<br/>aproximación lenta"]
 ```
 
-La escena 3D no contiene matemática: lee la muestra instantánea del motor en cada cuadro (`leerMuestraActual`).
+| Preset | L | R | C | E₀ | Resultado |
+|---|---|---|---|---|---|
+| Subamortiguado | 0.5 H | 10 Ω | 1000 µF | 12 V | ζ ≈ 0.224, oscila con ωd ≈ 43.6 rad/s |
+| Crítico | 0.5 H | 44.72 Ω | 1000 µF | 12 V | ζ = 1 |
+| Sobreamortiguado | 0.5 H | 80 Ω | 1000 µF | 12 V | ζ ≈ 1.79 |
 
-- Portadores de corriente: velocidad y sentido ∝ i(t).
-- Capacitor: número de cargas y campo ∝ q(t)/(C·E₀).
-- Resistor: brillo térmico ∝ P_R = R·i²(t); las bandas de color codifican el valor real de R.
-- Inductor: líneas de campo (ilustrativas) ∝ |i(t)|; número de espiras crece con L.
+---
 
-## Motor matemático (`src/engine`)
+## ✅ Exactitud verificada
 
-- `mathematics/parametrosDerivados.ts` — ω₀, α, ζ, R crítica, ωd, Q, τ dominante.
-- `mathematics/raices.ts` — ecuación característica con Math.js (raíces complejas).
-- `mathematics/clasificacion.ts` — clasificación con tolerancia configurable sobre |ζ − 1|.
-- `mathematics/solucionAnalitica.ts` — soluciones cerradas para raíces complejas, repetidas y reales distintas, con condiciones iniciales generales.
-- `mathematics/rk4.ts` — Runge-Kutta 4 sobre x₁ = q, x₂ = i, paso configurable.
-- `simulation/simulador.ts` — serie temporal completa, energías, tiempo de estabilización, sobrepaso.
-- `simulation/validaciones.ts` — condiciones iniciales, i = dq/dt, Kirchhoff, suma de voltajes, balance energético, estabilidad RK4 y concordancia analítica. Si alguna falla, la interfaz lo advierte.
+Cada simulación ejecuta validaciones; si alguna falla la interfaz lo advierte.
 
-## Desarrollo
+| Prueba | Criterio |
+|---|---|
+| RK4 vs. solución analítica | error relativo < 10⁻⁶ en los 3 regímenes |
+| Segunda ley de Kirchhoff | E = V_L + V_R + V_C |
+| Relación carga–corriente | i = dq/dt |
+| Balance energético | energía de la fuente = E_L + E_C + disipada |
+| Estabilidad numérica | probada en los extremos de todos los rangos |
+| Condiciones iniciales | q(0) = 0, i(0) = 0 |
 
 ```bash
-npm install
-npm run dev        # servidor local
-npm test           # 41 pruebas unitarias del motor (Vitest)
-npm run build      # build de producción
-npm run test:e2e   # pruebas de interfaz (requiere: npx playwright install)
+npm test   # 41 pruebas · Vitest
 ```
 
-## Stack
+---
 
-React 18 · Vite · TypeScript · Three.js · React Three Fiber · Drei · Framer Motion · GSAP · Plotly.js · KaTeX · Math.js · Zustand · Zod · Vitest · Playwright.
+## 🏗️ Arquitectura
 
-Los modelos 3D se construyen con geometrías de Three.js (sin recursos de terceros). Las representaciones de campos son simplificaciones visuales, no simulaciones electromagnéticas.
+```mermaid
+flowchart TB
+    subgraph UI["🖥️ Presentación · React + Framer Motion + GSAP"]
+      P1[Páginas] --- P2[Paneles y controles]
+    end
+    subgraph V3D["🧊 Visualización 3D · Three.js + R3F + Drei"]
+      V1[Componentes 3D] --- V2[Cámara · luces · efectos]
+    end
+    subgraph EST["🔗 Estado global · Zustand"]
+      E1[useLaboratorio]
+    end
+    subgraph MOTOR["🧮 Motor · TypeScript puro, sin React"]
+      M1[electrical] --- M2[mathematics] --- M3[simulation]
+    end
+    UI --> EST
+    V3D --> EST
+    EST --> MOTOR
+```
 
-## Documentación
+```text
+src/
+├── engine/          ← motor independiente y probado
+│   ├── electrical/  parámetros, rangos, presets, fuentes, código de colores
+│   ├── mathematics/ raíces, clasificación, soluciones, RK4, procedimiento
+│   └── simulation/  simulador, interpolación, estados, validaciones, CSV
+├── features/        ← un módulo por sección
+│   ├── laboratorio/ components-3d · scenes · controls
+│   ├── presentacion/ inicio/ graficas/ matematicas/ experimentos/ desafios/ ...
+├── store/  hooks/  services/  data/  styles/  utils/
+tests/  mathematics · electrical · simulation · e2e
+```
 
-- [Manual de usuario](docs/MANUAL_USUARIO.md)
-- [Guion de sustentación](docs/GUION_SUSTENTACION.md)
+---
 
-## Despliegue
+## 🚀 Ejecutar en local
 
-Configurado para Vercel (`vercel.json` reescribe las rutas a `index.html`). Persistencia 100 % local (`localStorage`); no hay backend.
+```bash
+git clone https://github.com/Alejostone1/Electrolab3d.git
+cd Electrolab3d
+npm install
+npm run dev
+```
+
+| Comando | Para qué |
+|---|---|
+| `npm run dev` | servidor de desarrollo |
+| `npm test` | pruebas del motor |
+| `npm run build` | build de producción |
+| `npm run test:e2e` | pruebas de interfaz (antes: `npx playwright install`) |
+
+Cada `git push` a `main` se despliega automáticamente en Vercel.
+
+---
+
+## 🧰 Tecnologías
+
+`React` · `Vite` · `TypeScript` · `Three.js` · `React Three Fiber` · `Drei` · `Framer Motion` · `GSAP` · `Plotly.js` · `KaTeX` · `Math.js` · `Zustand` · `Zod` · `Vitest` · `Playwright`
+
+Sin backend: experimentos, preferencias e historial se guardan en `localStorage`.
+
+---
+
+## 📖 Documentación
+
+- 📘 [Manual de usuario](docs/MANUAL_USUARIO.md)
+- 🎤 [Guion de sustentación](docs/GUION_SUSTENTACION.md)
+
+### Referencias
+
+- Zill, D. G. *Ecuaciones diferenciales con aplicaciones de modelado*. Cengage.
+- Boyce, W. E. y DiPrima, R. C. *Elementary Differential Equations and Boundary Value Problems*. Wiley.
+- Alexander, C. K. y Sadiku, M. N. O. *Fundamentos de circuitos eléctricos*. McGraw-Hill.
+- Burden, R. L. y Faires, J. D. *Análisis numérico*. Cengage.

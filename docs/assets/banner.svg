@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" font-family="Segoe UI, Inter, sans-serif">
+  <defs>
+    <linearGradient id="fondo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111F"/>
+      <stop offset="1" stop-color="#101D30"/>
+    </linearGradient>
+    <linearGradient id="acento" x1="0" x2="1">
+      <stop offset="0" stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+    <pattern id="rejilla" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#38BDF8" stroke-opacity="0.07"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="360" rx="24" fill="url(#fondo)"/>
+  <rect width="1200" height="360" rx="24" fill="url(#rejilla)"/>
+
+  <!-- Circuito RLC esquemático -->
+  <g fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M760 90H1120V270H760Z" stroke="#9FB3C8" stroke-opacity="0.35"/>
+    <!-- fuente -->
+    <circle cx="760" cy="180" r="26" stroke="#F59E0B" fill="#07111F"/>
+    <path d="M752 172h16M760 164v16M752 192h16" stroke="#F59E0B"/>
+    <!-- resistor -->
+    <path d="M840 90l10-14 16 28 16-28 16 28 16-28 10 14" stroke="#F87171"/>
+    <!-- inductor -->
+    <path d="M1120 120c22 0 22 20 0 20c22 0 22 20 0 20c22 0 22 20 0 20c22 0 22 20 0 20" stroke="#D9824A"/>
+    <!-- capacitor -->
+    <path d="M944 246v48M960 246v48" stroke="#34D399" stroke-width="5"/>
+    <path d="M944 270H760M960 270H1120" stroke="#9FB3C8" stroke-opacity="0.35"/>
+  </g>
+  <!-- portadores de corriente -->
+  <g fill="#22D3EE">
+    <circle cx="800" cy="90" r="5"/><circle cx="1000" cy="90" r="5"/><circle cx="1070" cy="90" r="5"/>
+    <circle cx="1120" cy="230" r="5"/><circle cx="1040" cy="270" r="5"/><circle cx="860" cy="270" r="5"/>
+    <circle cx="760" cy="240" r="5"/>
+  </g>
+  <!-- respuesta subamortiguada -->
+  <path d="M780 330 C 810 250, 830 250, 850 300 S 890 330, 910 305 S 950 290, 970 302 S 1010 306, 1030 302 L 1120 302" fill="none" stroke="#22D3EE" stroke-width="2.5" opacity="0.8"/>
+
+  <text x="64" y="120" fill="#94A3B8" font-size="18" letter-spacing="4">LABORATORIO VIRTUAL · MATEMÁTICAS IV</text>
+  <text x="62" y="196" fill="#F1F5F9" font-size="78" font-weight="600" letter-spacing="4">ELECTROLAB <tspan fill="url(#acento)">3D</tspan></text>
+  <text x="64" y="246" fill="#94A3B8" font-size="22">Circuitos RLC en serie y ecuaciones diferenciales de segundo orden</text>
+  <text x="64" y="300" fill="#22D3EE" font-size="24" font-family="Consolas, monospace">L q'' + R q' + q / C = E(t)</text>
+</svg>
