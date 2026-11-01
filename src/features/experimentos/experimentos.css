@@ -1,0 +1,104 @@
+.experimentos__pestanas {
+  margin-bottom: var(--espacio-4);
+}
+.experimentos__diseno {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: var(--espacio-4);
+  align-items: start;
+}
+.experimento__guia h2 {
+  font-size: 1.3rem;
+  margin-top: var(--espacio-2);
+}
+.experimento__guia h3 {
+  font-size: var(--texto-s);
+  color: var(--texto-2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: var(--espacio-4);
+}
+.experimento__guia ol,
+.experimento__guia ul {
+  padding-left: 1.2em;
+  font-size: var(--texto-s);
+  display: grid;
+  gap: 6px;
+}
+.experimento__conclusion {
+  margin: var(--espacio-4) 0;
+  padding: var(--espacio-3);
+  border-radius: var(--radio-m);
+  background: var(--acento-suave);
+  font-size: var(--texto-s);
+}
+.experimento__conclusion summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--acento);
+}
+.experimento__conclusion p {
+  margin: var(--espacio-2) 0 0;
+}
+.experimento__agregar {
+  display: flex;
+  gap: var(--espacio-2);
+}
+.experimento__guardar {
+  width: 100%;
+  margin-top: var(--espacio-3);
+}
+.experimento__resultados {
+  display: grid;
+  gap: var(--espacio-4);
+  min-width: 0;
+}
+.tabla-desplazable {
+  overflow-x: auto;
+  padding: var(--espacio-3);
+}
+.tabla-desplazable table {
+  min-width: 720px;
+}
+.punto-color {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.historial {
+  margin-top: var(--espacio-7);
+}
+.historial__cabecera {
+  justify-content: space-between;
+  margin-bottom: var(--espacio-4);
+}
+.registro {
+  display: grid;
+  gap: var(--espacio-2);
+  align-content: start;
+}
+.registro__cabecera {
+  justify-content: space-between;
+}
+.registro h3 {
+  font-size: 1.02rem;
+  margin: 0;
+}
+.registro p {
+  margin: 0;
+}
+.registro__observaciones {
+  font-style: italic;
+  color: var(--texto-2);
+}
+.formulario-guardar {
+  display: grid;
+  gap: var(--espacio-4);
+}
+@media (max-width: 900px) {
+  .experimentos__diseno {
+    grid-template-columns: 1fr;
+  }
+}

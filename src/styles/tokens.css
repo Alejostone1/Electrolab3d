@@ -1,0 +1,89 @@
+/*
+ * ELECTROLAB 3D · Sistema de diseño centralizado.
+ * Todos los colores, tipografías, espaciados y radios se definen aquí.
+ * El tema se controla con [data-theme] en <html>.
+ */
+:root {
+  --fuente-titulos: 'Sora', 'Segoe UI', system-ui, sans-serif;
+  --fuente-texto: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --fuente-mono: 'JetBrains Mono', 'Consolas', monospace;
+
+  --espacio-1: 4px;
+  --espacio-2: 8px;
+  --espacio-3: 12px;
+  --espacio-4: 16px;
+  --espacio-5: 24px;
+  --espacio-6: 32px;
+  --espacio-7: 48px;
+  --espacio-8: 72px;
+
+  --radio-s: 8px;
+  --radio-m: 12px;
+  --radio-l: 18px;
+  --radio-xl: 26px;
+
+  --texto-xs: 0.75rem;
+  --texto-s: 0.85rem;
+  --texto-m: 1rem;
+  --texto-l: 1.2rem;
+  --texto-xl: 1.6rem;
+  --texto-2xl: clamp(1.9rem, 4vw, 2.6rem);
+  --texto-hero: clamp(2.4rem, 7vw, 4.6rem);
+
+  --altura-cabecera: 64px;
+  --ancho-max: 1280px;
+  --transicion: 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+:root,
+[data-theme='dark'] {
+  --fondo: #07111f;
+  --fondo-2: #101d30;
+  --fondo-3: #16263d;
+  --panel: rgba(16, 29, 48, 0.78);
+  --panel-solido: #0e1a2c;
+  --borde: rgba(148, 163, 184, 0.16);
+  --borde-fuerte: rgba(148, 163, 184, 0.3);
+  --texto: #f1f5f9;
+  --texto-2: #94a3b8;
+  --texto-3: #64748b;
+  --azul: #38bdf8;
+  --cian: #22d3ee;
+  --verde: #34d399;
+  --naranja: #f59e0b;
+  --rojo: #f87171;
+  --violeta: #a78bfa;
+  --acento: var(--cian);
+  --acento-suave: rgba(34, 211, 238, 0.12);
+  --sombra: 0 18px 50px -20px rgba(0, 0, 0, 0.65);
+  --sombra-s: 0 6px 18px -8px rgba(0, 0, 0, 0.6);
+  --brillo: 0 0 0 1px rgba(56, 189, 248, 0.25), 0 0 28px -6px rgba(34, 211, 238, 0.45);
+  --cuadricula: rgba(56, 189, 248, 0.06);
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --fondo: #eef3f9;
+  --fondo-2: #ffffff;
+  --fondo-3: #e2eaf4;
+  --panel: rgba(255, 255, 255, 0.86);
+  --panel-solido: #ffffff;
+  --borde: rgba(15, 23, 42, 0.1);
+  --borde-fuerte: rgba(15, 23, 42, 0.2);
+  --texto: #0f172a;
+  --texto-2: #475569;
+  --texto-3: #64748b;
+  --azul: #0284c7;
+  --cian: #0891b2;
+  --verde: #059669;
+  --naranja: #d97706;
+  --rojo: #dc2626;
+  --violeta: #7c3aed;
+  --acento: var(--azul);
+  --acento-suave: rgba(2, 132, 199, 0.1);
+  --sombra: 0 18px 44px -24px rgba(15, 23, 42, 0.35);
+  --sombra-s: 0 6px 16px -10px rgba(15, 23, 42, 0.35);
+  --brillo: 0 0 0 1px rgba(2, 132, 199, 0.25), 0 0 24px -8px rgba(2, 132, 199, 0.35);
+  --cuadricula: rgba(2, 132, 199, 0.07);
+  color-scheme: light;
+}

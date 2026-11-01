@@ -1,0 +1,44 @@
+{
+  "name": "electrolab-3d",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Laboratorio virtual 3D de circuitos RLC en serie y ecuaciones diferenciales de segundo orden",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.117.3",
+    "@react-three/fiber": "^8.17.10",
+    "framer-motion": "^11.11.17",
+    "gsap": "^3.12.5",
+    "katex": "^0.16.11",
+    "mathjs": "^13.2.2",
+    "plotly.js-dist-min": "^2.35.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-plotly.js": "^2.6.0",
+    "react-router-dom": "^6.28.0",
+    "three": "^0.169.0",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/katex": "^0.16.7",
+    "@types/plotly.js": "^2.33.4",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/react-plotly.js": "^2.6.3",
+    "@types/three": "^0.169.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.5"
+  }
+}

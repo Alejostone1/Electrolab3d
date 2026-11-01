@@ -1,0 +1,132 @@
+/* ───────── Osciloscopio ───────── */
+.osciloscopio {
+  margin: 0 0 var(--espacio-3);
+  padding: 8px;
+  border-radius: var(--radio-m);
+  background: color-mix(in srgb, var(--fondo) 85%, #000 15%);
+  border: 1px solid var(--borde);
+}
+.osciloscopio svg {
+  width: 100%;
+  height: 120px;
+  display: block;
+}
+.osciloscopio__rejilla {
+  stroke: var(--borde);
+  stroke-width: 0.6;
+}
+.osciloscopio__referencia {
+  stroke: var(--verde);
+  stroke-dasharray: 4 4;
+  stroke-width: 1;
+  opacity: 0.7;
+}
+.osciloscopio__traza {
+  fill: none;
+  stroke-width: 1.8;
+  vector-effect: non-scaling-stroke;
+}
+.osciloscopio__traza--carga {
+  stroke: var(--cian);
+}
+.osciloscopio__traza--corriente {
+  stroke: var(--naranja);
+}
+.osciloscopio__cursor {
+  stroke: var(--texto);
+  stroke-width: 1;
+  opacity: 0.6;
+  vector-effect: non-scaling-stroke;
+}
+.osciloscopio__leyenda {
+  display: flex;
+  gap: var(--espacio-3);
+  font-size: var(--texto-xs);
+  color: var(--texto-2);
+  margin-top: 4px;
+}
+.osciloscopio__clave::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 2px;
+  margin-right: 5px;
+  vertical-align: middle;
+  background: var(--c);
+}
+.osciloscopio__clave--carga {
+  --c: var(--cian);
+}
+.osciloscopio__clave--corriente {
+  --c: var(--naranja);
+}
+.osciloscopio__clave--referencia {
+  --c: var(--verde);
+}
+
+/* ───────── Reproducción ───────── */
+.reproduccion {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-4);
+}
+.reproduccion__botones {
+  display: flex;
+  gap: 6px;
+}
+.reproduccion__linea {
+  flex: 1;
+  min-width: 0;
+}
+.reproduccion__tiempos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--texto-xs);
+  color: var(--texto-2);
+  gap: var(--espacio-2);
+}
+.reproduccion__velocidad {
+  display: grid;
+  gap: 2px;
+  justify-items: end;
+}
+.reproduccion__velocidad .selector {
+  width: 76px;
+  min-height: 36px;
+  padding: 4px 8px;
+}
+.reproduccion__velocidad small {
+  font-size: 10px;
+  white-space: nowrap;
+}
+.chip--estado-desconectado {
+  color: var(--texto-3);
+}
+.chip--estado-preparado {
+  color: var(--naranja);
+}
+.chip--estado-encendido,
+.chip--estado-transitorio,
+.chip--estado-oscilando {
+  color: var(--cian);
+}
+.chip--estado-estabilizandose,
+.chip--estado-estabilizado {
+  color: var(--verde);
+}
+
+
+@media (max-width: 900px) {
+  .reproduccion {
+    gap: var(--espacio-2);
+    flex-wrap: wrap;
+  }
+  .reproduccion__linea {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .reproduccion__velocidad small {
+    display: none;
+  }
+}

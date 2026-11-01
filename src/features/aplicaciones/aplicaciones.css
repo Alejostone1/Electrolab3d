@@ -1,0 +1,74 @@
+.aplicaciones__pestanas {
+  margin-bottom: var(--espacio-5);
+}
+.aplicacion {
+  display: grid;
+  gap: var(--espacio-2);
+  align-content: start;
+}
+.aplicacion h3 {
+  margin: 0;
+}
+.funcionalidad__icono {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: var(--acento);
+  background: var(--acento-suave);
+}
+.analogia {
+  margin-top: var(--espacio-5);
+}
+.concepto {
+  display: grid;
+  gap: var(--espacio-2);
+  align-content: start;
+}
+.concepto h3 {
+  margin: 0;
+}
+.ficha__simbolo-doc {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--acento-suave);
+  color: var(--acento);
+}
+.formulario {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+  gap: var(--espacio-3);
+}
+.formulario__item {
+  padding: var(--espacio-4);
+}
+.glosario__busqueda {
+  max-width: 420px;
+  margin-bottom: var(--espacio-4);
+}
+.glosario {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: var(--espacio-3);
+  margin: 0;
+}
+.glosario dt {
+  font-weight: 600;
+  font-family: var(--fuente-titulos);
+  margin-bottom: 4px;
+}
+.glosario dd {
+  margin: 0;
+}
+.referencias {
+  display: grid;
+  gap: var(--espacio-3);
+  padding-left: 1.2em;
+}
+.tabla-desplazable {
+  overflow-x: auto;
+}

@@ -1,0 +1,108 @@
+.acerca__equipo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: var(--espacio-3);
+  margin-bottom: var(--espacio-5);
+}
+.integrante {
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: var(--espacio-2);
+}
+.integrante h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.integrante p {
+  margin: 0;
+}
+.integrante__avatar {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--azul), var(--verde));
+  color: #04121f;
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.integrante--profesor .integrante__avatar {
+  background: linear-gradient(135deg, var(--naranja), var(--violeta));
+}
+.acerca__columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espacio-4);
+}
+.acerca__columnas h3 {
+  font-size: var(--texto-s);
+  margin-top: var(--espacio-4);
+}
+.lista-check {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  font-size: var(--texto-s);
+}
+.lista-check li {
+  display: flex;
+  gap: 8px;
+}
+.lista-check svg {
+  color: var(--verde);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.capas {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+.capas li {
+  display: grid;
+  padding: 10px 12px;
+  border-radius: var(--radio-m);
+  background: var(--fondo-3);
+  border-left: 3px solid var(--acento);
+}
+.capas .mono {
+  color: var(--acento);
+}
+.acerca__flujo {
+  margin-top: var(--espacio-4);
+}
+.flujo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-2);
+}
+.flujo__paso {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--borde-fuerte);
+  font-size: var(--texto-s);
+}
+.flujo__paso svg {
+  color: var(--acento);
+  margin-right: -6px;
+}
+.acerca__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-3);
+  margin-top: var(--espacio-6);
+}
+@media (max-width: 900px) {
+  .acerca__columnas {
+    grid-template-columns: 1fr;
+  }
+}

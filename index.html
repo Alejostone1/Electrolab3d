@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icons/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="ELECTROLAB 3D: laboratorio virtual interactivo de circuitos RLC y ecuaciones diferenciales de segundo orden. Proyecto final de Matemáticas IV." />
+    <meta name="theme-color" content="#07111F" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Sora:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <title>ELECTROLAB 3D · Laboratorio virtual RLC</title>
+    <script>
+      try {
+        var tema = JSON.parse(localStorage.getItem('electrolab:preferencias') || '{}').tema;
+        if (!tema) tema = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        document.documentElement.dataset.theme = tema;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

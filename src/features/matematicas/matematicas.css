@@ -1,0 +1,143 @@
+.matematicas__diseno {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: var(--espacio-5);
+  align-items: start;
+}
+.matematicas__lateral {
+  position: sticky;
+  top: calc(var(--altura-cabecera) + 16px);
+  display: grid;
+  gap: var(--espacio-3);
+  max-height: calc(100dvh - var(--altura-cabecera) - 32px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.matematicas__lateral .tarjeta {
+  display: grid;
+  gap: var(--espacio-3);
+}
+.matematicas__nota {
+  margin: 0;
+}
+.plano {
+  margin: 0;
+  padding: var(--espacio-3);
+  border-radius: var(--radio-l);
+  background: var(--panel);
+  border: 1px solid var(--borde);
+}
+.plano svg {
+  width: 100%;
+  display: block;
+}
+.plano__eje {
+  stroke: var(--borde-fuerte);
+}
+.plano__circulo {
+  fill: none;
+  stroke: var(--acento);
+  stroke-dasharray: 3 4;
+  opacity: 0.5;
+}
+.plano__texto {
+  fill: var(--texto-2);
+  font-size: 11px;
+  font-family: var(--fuente-mono);
+}
+.plano__raiz {
+  stroke: var(--fondo-2);
+  stroke-width: 2;
+}
+.plano__raiz--complejas-conjugadas {
+  fill: var(--cian);
+}
+.plano__raiz--reales-repetidas {
+  fill: var(--verde);
+}
+.plano__raiz--reales-distintas {
+  fill: var(--naranja);
+}
+.plano figcaption {
+  margin-top: var(--espacio-2);
+}
+.indice-pasos {
+  display: grid;
+  gap: 2px;
+  padding: var(--espacio-3) !important;
+}
+.indice-pasos a {
+  padding: 6px 8px;
+  border-radius: var(--radio-s);
+  font-size: var(--texto-s);
+  color: var(--texto-2);
+}
+.indice-pasos a:hover {
+  background: var(--acento-suave);
+  color: var(--texto);
+}
+.indice-pasos .mono {
+  color: var(--acento);
+  margin-right: 6px;
+}
+
+.pasos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--espacio-4);
+  counter-reset: paso;
+}
+.paso {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: var(--espacio-4);
+  scroll-margin-top: calc(var(--altura-cabecera) + 16px);
+}
+.paso__numero {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--acento-suave);
+  color: var(--acento);
+  font-size: var(--texto-s);
+}
+.paso h2 {
+  font-size: 1.2rem;
+  margin-bottom: var(--espacio-2);
+}
+.paso .formula-bloque {
+  margin: var(--espacio-2) 0;
+  padding: var(--espacio-2) var(--espacio-3);
+  border-radius: var(--radio-m);
+  background: var(--fondo-3);
+}
+.paso__nota {
+  padding: var(--espacio-2) var(--espacio-3);
+  border-left: 3px solid var(--naranja);
+  background: color-mix(in srgb, var(--naranja) 8%, transparent);
+  border-radius: 0 var(--radio-s) var(--radio-s) 0;
+}
+@media (max-width: 900px) {
+  .matematicas__diseno {
+    grid-template-columns: 1fr;
+  }
+  .matematicas__lateral {
+    position: static;
+    max-height: none;
+  }
+  .indice-pasos {
+    display: none !important;
+  }
+  .paso {
+    grid-template-columns: 1fr;
+    gap: var(--espacio-2);
+  }
+  .paso__numero {
+    width: 36px;
+    height: 36px;
+  }
+}

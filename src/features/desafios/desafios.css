@@ -1,0 +1,206 @@
+.desafios__modos {
+  max-width: 560px;
+  margin-bottom: var(--espacio-5);
+}
+.prediccion__pasos {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--espacio-4);
+  display: flex;
+  gap: var(--espacio-2);
+  flex-wrap: wrap;
+}
+.prediccion__pasos li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  font-size: var(--texto-s);
+  color: var(--texto-2);
+}
+.prediccion__pasos span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--fondo-3);
+  font-size: var(--texto-xs);
+}
+.prediccion__pasos li.activo {
+  border-color: var(--acento);
+  color: var(--texto);
+}
+.prediccion__pasos li.activo span {
+  background: var(--acento);
+  color: #04121f;
+}
+.prediccion__diseno {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espacio-4);
+}
+.prediccion h2 {
+  font-size: 1.05rem;
+  margin: var(--espacio-4) 0 var(--espacio-3);
+}
+.prediccion h2:first-child {
+  margin-top: 0;
+}
+.opciones-prediccion,
+.opciones {
+  display: grid;
+  gap: var(--espacio-2);
+}
+.opcion {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  min-height: 48px;
+  padding: 10px 14px;
+  border-radius: var(--radio-m);
+  border: 1px solid var(--borde-fuerte);
+  background: var(--fondo-2);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--transicion), background var(--transicion);
+}
+.opcion:hover:not(:disabled) {
+  border-color: var(--acento);
+}
+.opcion:disabled {
+  cursor: default;
+}
+.opcion--elegida {
+  border-color: var(--acento);
+  background: var(--acento-suave);
+}
+.opcion--correcta {
+  border-color: var(--verde);
+  background: color-mix(in srgb, var(--verde) 12%, transparent);
+}
+.opcion--incorrecta {
+  border-color: var(--rojo);
+  background: color-mix(in srgb, var(--rojo) 12%, transparent);
+}
+.opcion__letra {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--fondo-3);
+  font-size: var(--texto-xs);
+  flex-shrink: 0;
+}
+.prediccion__ejecutar {
+  width: 100%;
+  margin: var(--espacio-4) 0 var(--espacio-2);
+}
+.prediccion__espera {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: var(--espacio-2);
+  min-height: 220px;
+  border: 1px dashed var(--borde-fuerte);
+  border-radius: var(--radio-m);
+  padding: var(--espacio-4);
+}
+.prediccion__marcador {
+  margin: var(--espacio-3) 0 0;
+}
+.veredicto {
+  margin-top: var(--espacio-4);
+  padding: var(--espacio-4);
+  border-radius: var(--radio-m);
+  border: 1px solid;
+}
+.veredicto strong {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.veredicto h3 {
+  font-size: var(--texto-s);
+  margin: var(--espacio-3) 0 0;
+}
+.veredicto--ok {
+  border-color: color-mix(in srgb, var(--verde) 50%, transparent);
+  background: color-mix(in srgb, var(--verde) 8%, transparent);
+}
+.veredicto--ok strong {
+  color: var(--verde);
+}
+.veredicto--error {
+  border-color: color-mix(in srgb, var(--rojo) 50%, transparent);
+  background: color-mix(in srgb, var(--rojo) 8%, transparent);
+}
+.veredicto--error strong {
+  color: var(--rojo);
+}
+.veredicto p {
+  margin: var(--espacio-2) 0;
+}
+
+.cuestionario {
+  max-width: 760px;
+}
+.cuestionario__progreso {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--espacio-2);
+  margin-bottom: var(--espacio-4);
+  color: var(--texto-2);
+}
+.barra-progreso {
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: 6px;
+  background: var(--fondo-3);
+  overflow: hidden;
+}
+.barra-progreso span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--azul), var(--verde));
+  transition: width 400ms ease;
+}
+.pregunta h2 {
+  font-size: 1.2rem;
+  margin: var(--espacio-3) 0 var(--espacio-4);
+}
+.reto {
+  display: grid;
+  gap: var(--espacio-2);
+}
+.resultado-final {
+  max-width: 560px;
+  text-align: center;
+  display: grid;
+  gap: var(--espacio-3);
+  justify-items: center;
+}
+.resultado-final__porcentaje {
+  font-size: 3.4rem;
+  color: var(--acento);
+}
+.historial-desafios {
+  width: 100%;
+  text-align: left;
+  border-top: 1px solid var(--borde);
+  padding-top: var(--espacio-3);
+}
+.historial-desafios h3 {
+  font-size: var(--texto-s);
+}
+.historial-desafios p {
+  margin: 0 0 4px;
+}
+@media (max-width: 900px) {
+  .prediccion__diseno {
+    grid-template-columns: 1fr;
+  }
+}
