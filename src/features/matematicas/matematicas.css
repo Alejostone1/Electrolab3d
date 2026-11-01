@@ -123,7 +123,7 @@
 }
 @media (max-width: 900px) {
   .matematicas__diseno {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .matematicas__lateral {
     position: static;
@@ -133,7 +133,7 @@
     display: none !important;
   }
   .paso {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--espacio-2);
   }
   .paso__numero {

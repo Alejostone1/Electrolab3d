@@ -34,7 +34,7 @@
 }
 .acerca__columnas {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--espacio-4);
 }
 .acerca__columnas h3 {
@@ -103,6 +103,6 @@
 }
 @media (max-width: 900px) {
   .acerca__columnas {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }

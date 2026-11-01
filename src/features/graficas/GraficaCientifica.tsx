@@ -6,6 +6,9 @@ import { usePreferencias } from '@/store/usePreferencias';
 
 const Plot = createPlotlyComponent(Plotly);
 
+/** En pantallas táctiles estrechas el arrastre se reserva para desplazar la página. */
+const esTactil = typeof window !== 'undefined' && window.matchMedia('(max-width: 900px), (pointer: coarse)').matches;
+
 export interface Serie {
   nombre: string;
   x: number[];
@@ -70,8 +73,9 @@ export const GraficaCientifica = memo(function GraficaCientifica({ titulo, serie
       plot_bgcolor: 'rgba(0,0,0,0)',
       font: { family: 'Inter, sans-serif', size: 11, color: colores.texto },
       hovermode: 'x unified',
+      dragmode: esTactil ? false : 'zoom',
       hoverlabel: { bgcolor: colores.fondoHover, font: { family: 'JetBrains Mono, monospace', size: 11 } },
-      legend: { orientation: 'h', y: -0.22, x: 0, font: { size: 11 } },
+      legend: { orientation: 'h', y: -0.22, x: 0, font: { size: esTactil ? 10 : 11 } },
       xaxis: { title: { text: ejeX }, gridcolor: colores.rejilla, zerolinecolor: colores.eje, linecolor: colores.eje, exponentformat: 'SI' },
       yaxis: { title: { text: ejeY }, gridcolor: colores.rejilla, zerolinecolor: colores.eje, linecolor: colores.eje, exponentformat: 'SI' },
       shapes:
@@ -87,7 +91,7 @@ export const GraficaCientifica = memo(function GraficaCientifica({ titulo, serie
       <Plot
         data={datos}
         layout={disposicion}
-        config={{ responsive: true, displaylogo: false, modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d'], toImageButtonOptions: { filename: 'electrolab-grafica' } }}
+        config={{ responsive: true, displaylogo: false, displayModeBar: !esTactil, scrollZoom: false, modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d'], toImageButtonOptions: { filename: 'electrolab-grafica' } }}
         style={{ width: '100%' }}
         useResizeHandler
       />

@@ -156,7 +156,7 @@
   margin: 0 auto;
   display: grid;
   gap: var(--espacio-6);
-  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
 }
 .pie h4 {
   font-size: var(--texto-s);
@@ -186,6 +186,6 @@
 }
 @media (max-width: 760px) {
   .pie__contenido {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }

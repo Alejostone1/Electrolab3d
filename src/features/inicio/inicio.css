@@ -134,7 +134,7 @@
 .equipo-inicio {
   margin-top: var(--espacio-8);
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
   gap: var(--espacio-5);
   align-items: center;
 }
@@ -190,6 +190,6 @@
     margin-top: 0;
   }
   .equipo-inicio {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }

@@ -32,14 +32,14 @@ function ControlCamara({
   const controles = useRef<CameraControls>(null);
   // En pantallas verticales (celulares) la cámara se aleja para que el circuito quepa a lo ancho.
   const aspecto = useThree((s) => s.size.width / Math.max(1, s.size.height));
-  const factor = aspecto < 1.2 ? Math.min(2.1, 1.2 / aspecto) : 1;
+  const factor = aspecto < 1 ? Math.min(2.1, 1 / aspecto) : 1;
   useEffect(() => {
     const [ox, oy, oz] = encuadre.objetivo;
     const px = ox + (encuadre.posicion[0] - ox) * factor;
     const py = oy + (encuadre.posicion[1] - oy) * factor;
     const pz = oz + (encuadre.posicion[2] - oz) * factor;
     const distancia = Math.hypot(px - ox, py - oy, pz - oz);
-    controles.current?.setFocalOffset(-desplazamiento[0] * distancia, -desplazamiento[1] * distancia, 0, true);
+    controles.current?.setFocalOffset(-desplazamiento[0] * distancia, desplazamiento[1] * distancia, 0, true);
     controles.current?.setLookAt(px, py, pz, ox, oy, oz, true);
   }, [encuadre.posicion, encuadre.objetivo, claveEncuadre, desplazamiento[0], desplazamiento[1], factor]);
 
@@ -86,6 +86,8 @@ export function Escena3D({
   return (
     <Canvas
       className={className}
+      // Una escena no interactiva no debe capturar el dedo: así la página se puede desplazar encima.
+      style={interactiva ? undefined : { pointerEvents: 'none', touchAction: 'auto' }}
       shadows={calidadAlta}
       dpr={calidadAlta ? [1, 2] : [1, 1.4]}
       camera={{ position: [...encuadre.posicion] as [number, number, number], fov: 42, near: 0.1, far: 120 }}
