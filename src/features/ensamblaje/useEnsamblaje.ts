@@ -53,6 +53,8 @@ interface EstadoEnsamblaje {
   orientacion: Orientacion;
   huecoActivo: string | null;
   arrastrando: string | null;
+  /** Instante (ms) en que se soltó la última pieza: evita que ese mismo clic deseleccione. */
+  soltadoEn: number;
   verConexiones: boolean;
   verRedes: boolean;
   analisis: AnalisisCircuito;
@@ -132,6 +134,7 @@ export const useEnsamblaje = create<EstadoEnsamblaje>((set, get) => ({
   orientacion: 'horizontal',
   huecoActivo: null,
   arrastrando: null,
+  soltadoEn: 0,
   verConexiones: false,
   verRedes: true,
   colorCable: 0,
@@ -176,8 +179,8 @@ export const useEnsamblaje = create<EstadoEnsamblaje>((set, get) => ({
     const pieza = piezas.find((p) => p.id === arrastrando);
     const terminales = pieza && hueco ? trasladar(pieza, hueco) : null;
     if (pieza && terminales && terminalesValidos(piezas, terminales, pieza.id) && terminales[0] !== pieza.terminales[0]) {
-      set({ ...recalcular(piezas.map((p) => (p.id === pieza.id ? { ...p, terminales } : p))), arrastrando: null });
-    } else set({ arrastrando: null });
+      set({ ...recalcular(piezas.map((p) => (p.id === pieza.id ? { ...p, terminales } : p))), arrastrando: null, soltadoEn: performance.now() });
+    } else set({ arrastrando: null, soltadoEn: performance.now() });
   },
 
   seleccionar: (seleccion) => set({ seleccion }),

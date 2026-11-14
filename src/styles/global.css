@@ -560,3 +560,28 @@ input[type='range']::-moz-range-thumb {
     display: none;
   }
 }
+
+/* Fórmulas cuyos símbolos caen y se acomodan */
+.formula-animada .katex-html .mord,
+.formula-animada .katex-html .mbin,
+.formula-animada .katex-html .mrel,
+.formula-animada .katex-html .mopen,
+.formula-animada .katex-html .mclose,
+.formula-animada .katex-html .mpunct,
+.formula-animada .katex-html .mop {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+.derivacion__control {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin-top: var(--espacio-2);
+}
+.derivacion__control .mono {
+  font-size: var(--texto-xs);
+  color: var(--texto-2);
+}
+.derivacion__paso .formula-bloque {
+  font-size: 1.12em;
+}

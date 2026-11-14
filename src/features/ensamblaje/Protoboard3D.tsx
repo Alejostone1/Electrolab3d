@@ -286,7 +286,8 @@ export function Protoboard3D({ paleta, proyector }: PropiedadesProtoboard) {
         onClick={(e) => {
           e.stopPropagation();
           const hueco = huecoDe(e);
-          if (hueco && !useEnsamblaje.getState().arrastrando) clicEnHueco(hueco);
+          const estado = useEnsamblaje.getState();
+          if (hueco && !estado.arrastrando && performance.now() - estado.soltadoEn > 300) clicEnHueco(hueco);
         }}
       >
         <planeGeometry args={[ANCHO, PROFUNDO]} />

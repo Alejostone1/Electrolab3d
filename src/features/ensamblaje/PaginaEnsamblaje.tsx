@@ -287,7 +287,7 @@ export default function PaginaEnsamblaje() {
 
       <section className="ensamblaje__escenario" onDragOver={(e) => e.preventDefault()} onDrop={alSoltarHTML}>
         <div className="ensamblaje__lienzo">
-          <Escena3D encuadre={{ posicion: [0, 8.5, 7.5], objetivo: [0, 0, 0.4] }} interactiva={!arrastrando}>
+          <Escena3D encuadre={{ posicion: [0, 8.5, 7.5], objetivo: [0, 0, 0.4] }} camaraBloqueada={Boolean(arrastrando)}>
             {(paleta) => <Protoboard3D paleta={paleta} proyector={proyector} />}
           </Escena3D>
           <div className="ensamblaje__herramientas">

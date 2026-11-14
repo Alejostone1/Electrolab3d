@@ -124,7 +124,10 @@ export const DIAPOSITIVAS: Diapositiva[] = [
         <div className="creditos">
           {BLOQUES.map((b) => (
             <div key={b.integrante} className="creditos__fila">
-              <span className="creditos__numero mono">{b.numero}</span>
+              <span className="creditos__numero mono">
+                <span className="expositor__punto" style={{ background: b.color }} />
+                {b.numero}
+              </span>
               <span className="creditos__nombre">{b.integrante}</span>
               <span className="creditos__rol">{b.titulo}</span>
             </div>
@@ -139,7 +142,7 @@ export const DIAPOSITIVAS: Diapositiva[] = [
     ),
   },
 
-  /* ───────────── Capítulo I · Alejandro ───────────── */
+  /* ───────────── Capítulo I · Daniel ───────────── */
   {
     id: 'capitulo-1',
     bloque: 0,
@@ -285,7 +288,7 @@ export const DIAPOSITIVAS: Diapositiva[] = [
     ),
   },
 
-  /* ───────────── Capítulo II · Daniel ───────────── */
+  /* ───────────── Capítulo II · Alejandro ───────────── */
   {
     id: 'capitulo-2',
     bloque: 1,
@@ -298,52 +301,111 @@ export const DIAPOSITIVAS: Diapositiva[] = [
     contenido: <Capitulo indice={1} />,
   },
   {
+    id: 'piezas',
+    bloque: 1,
+    seccion: 'II · El modelo',
+    titulo: 'Las piezas de la ecuación',
+    encuadre: GENERAL,
+    autoRotar: true,
+    velocidadGiro: 0.0006,
+    preset: 'subamortiguado',
+    ejecutar: true,
+    contenido: (
+      <>
+        <p>Antes de resolver, leamos la ecuación como una frase. Cada término es una pieza del circuito:</p>
+        <Formula latex="L\,q'' + R\,q' + \frac{1}{C}\,q = E(t)" bloque className="formula-destacada" />
+        <ul className="piezas-ecuacion">
+          <li>
+            <Formula latex="q" /> <span>lo que buscamos: cuánta carga tiene el capacitor en cada instante.</span>
+          </li>
+          <li>
+            <Formula latex="q' = i" /> <span>qué tan rápido cambia la carga: es la corriente.</span>
+          </li>
+          <li>
+            <Formula latex="q''" /> <span>qué tan rápido cambia la corriente.</span>
+          </li>
+          <li>
+            <Formula latex="L,\ R,\ C" /> <span>los valores del circuito: son números fijos que conocemos.</span>
+          </li>
+          <li>
+            <Formula latex="E(t)" /> <span>lo que empuja: la batería.</span>
+          </li>
+        </ul>
+        <p className="texto-2">Se llama de segundo orden porque aparece hasta la segunda derivada, q″.</p>
+      </>
+    ),
+  },
+  {
     id: 'kirchhoff',
     bloque: 1,
     seccion: 'II · El modelo',
-    titulo: 'De Kirchhoff a la ecuación diferencial',
+    titulo: 'La regla de la malla',
     encuadre: { posicion: [0.01, 14, 6], objetivo: [0, 0, 0.5] },
     preset: 'subamortiguado',
     ejecutar: true,
     contenido: (
       <>
-        <p>En una malla cerrada el voltaje aplicado se reparte entre los componentes. Observa cómo se construye la ecuación:</p>
+        <p>
+          <b>En palabras:</b> todo el voltaje que pone la batería se reparte entre las tres piezas. Es la ley de Kirchhoff.
+        </p>
         <FormulaProgresiva
           pasos={[
-            { latex: 'E(t) = V_L + V_R + V_C' },
-            { latex: 'E(t) = L\\frac{di}{dt} + R\\,i + \\frac{q}{C}', operacion: 'Sustituir cada caída de voltaje' },
-            { latex: "i = q', \\qquad \\frac{di}{dt} = q''", operacion: 'Relacionar corriente y carga' },
-            { latex: "L\\,q'' + R\\,q' + \\frac{1}{C}\\,q = E(t)", operacion: 'Escribir todo en función de q(t)' },
+            { latex: 'E = V_L + V_R + V_C', operacion: 'Lo que da la batería = lo que usa cada pieza' },
+            { latex: 'E = L\\frac{di}{dt} + R\\,i + \\frac{q}{C}', operacion: 'Cambiamos cada voltaje por su fórmula' },
+            { latex: "i = q', \\qquad \\frac{di}{dt} = q''", operacion: 'La corriente es qué tan rápido cambia la carga' },
+            { latex: "L\\,q'' + R\\,q' + \\frac{1}{C}\\,q = E(t)", operacion: 'Todo queda escrito con q: esa es nuestra ecuación' },
           ]}
-          intervalo={2200}
         />
-        <p className="texto-2">EDO lineal, de segundo orden, con coeficientes constantes. Toca cualquier variable para ver su significado.</p>
       </>
     ),
   },
   {
-    id: 'caracteristica',
+    id: 'exponencial',
     bloque: 1,
-    seccion: 'II · El modelo',
-    titulo: 'Ecuación característica y discriminante',
+    seccion: 'II · Cómo se resuelve',
+    titulo: 'Probamos con una exponencial',
     encuadre: { posicion: [-6, 9, 9], objetivo: [0, 0, 0] },
+    autoRotar: true,
+    velocidadGiro: 0.0007,
+    contenido: (
+      <>
+        <p>
+          <b>La idea:</b> buscamos una función que, al derivarla, siga pareciéndose a sí misma. La exponencial hace justo eso.
+        </p>
+        <FormulaProgresiva
+          pasos={[
+            { latex: 'q = e^{rt}', operacion: 'Probamos esta función (r es un número por descubrir)' },
+            { latex: "q' = r\\,e^{rt}, \\qquad q'' = r^2 e^{rt}", operacion: 'Derivamos dos veces: solo aparece r multiplicando' },
+            { latex: 'e^{rt}\\left(L r^2 + R r + \\tfrac{1}{C}\\right) = 0', operacion: 'Reemplazamos en la ecuación (sin la batería)' },
+            { latex: 'L\\,r^2 + R\\,r + \\frac{1}{C} = 0', operacion: 'e^{rt} nunca es cero: queda una ecuación de segundo grado' },
+          ]}
+        />
+        <p className="texto-2">Es la misma ecuación de segundo grado del colegio: a = L, b = R, c = 1/C.</p>
+      </>
+    ),
+  },
+  {
+    id: 'discriminante',
+    bloque: 1,
+    seccion: 'II · Cómo se resuelve',
+    titulo: 'El número que decide todo',
+    encuadre: { posicion: [8, 6, -8], objetivo: [0, 0.4, 0] },
     autoRotar: true,
     velocidadGiro: 0.0007,
     contenido: (
       <>
         <FormulaProgresiva
           pasos={[
-            { latex: "L\\,q'' + R\\,q' + \\frac{1}{C}\\,q = 0" },
-            { latex: 'q = e^{rt} \\;\\Rightarrow\\; e^{rt}\\left(L r^2 + R r + \\tfrac{1}{C}\\right) = 0', operacion: 'Proponer una exponencial' },
-            { latex: 'r_{1,2} = -\\alpha \\pm \\sqrt{\\alpha^2 - \\omega_0^2}', operacion: 'Fórmula cuadrática' },
-            { latex: '\\Delta = R^2 - \\frac{4L}{C} \\quad\\Rightarrow\\quad R_c = 2\\sqrt{L/C}', operacion: 'El signo del discriminante decide' },
+            { latex: 'r = \\frac{-R \\pm \\sqrt{\\Delta}}{2L}', operacion: 'Fórmula general de segundo grado' },
+            { latex: '\\Delta = R^2 - \\frac{4L}{C}', operacion: 'Lo que va dentro de la raíz decide el comportamiento' },
+            { latex: '\\Delta = 10^2 - \\frac{4(0.5)}{0.001} = 100 - 2000 = -1900', operacion: 'Ejemplo con R = 10 Ω, L = 0.5 H, C = 1000 µF' },
+            { latex: 'R_c = 2\\sqrt{\\frac{L}{C}} = 2\\sqrt{\\frac{0.5}{0.001}} \\approx 44.72\\ \\Omega', operacion: 'La resistencia que hace Δ = 0 es la frontera' },
           ]}
-          intervalo={2200}
         />
-        <div className="casos">
-          <span className="chip chip--subamortiguado">Δ &lt; 0 · complejas</span>
-          <span className="chip chip--critico">Δ = 0 · repetida</span>
-          <span className="chip chip--sobreamortiguado">Δ &gt; 0 · reales</span>
+        <div className="casos-simples">
+          <span className="chip chip--subamortiguado chip--sin-punto">Δ negativo → oscila, como un columpio</span>
+          <span className="chip chip--critico chip--sin-punto">Δ = 0 → llega justo, sin pasarse</span>
+          <span className="chip chip--sobreamortiguado chip--sin-punto">Δ positivo → llega lento, como una puerta con freno</span>
         </div>
       </>
     ),
@@ -351,39 +413,42 @@ export const DIAPOSITIVAS: Diapositiva[] = [
   {
     id: 'soluciones',
     bloque: 1,
-    seccion: 'II · El modelo',
-    titulo: 'Las tres formas de la solución',
+    seccion: 'II · Cómo se resuelve',
+    titulo: 'Las tres respuestas posibles',
     encuadre: { posicion: [7, 5, 9], objetivo: [0, 0.4, 0] },
     autoRotar: true,
     velocidadGiro: 0.0007,
     contenido: (
       <>
         <p>
-          Solución general = particular + homogénea. Con fuente constante <Formula latex="q_p = C E_0" />; las constantes <Formula latex="A" /> y{' '}
-          <Formula latex="B" /> salen de <Formula latex="q(0) = 0" /> e <Formula latex="i(0) = 0" />.
+          Al final el capacitor siempre termina con la misma carga, <Formula latex="C E_0" />. Lo que cambia es <b>cómo llega</b> hasta ahí:
         </p>
         <div className="formas">
           <div className="formas__fila formas__fila--subamortiguado">
-            <span>Δ &lt; 0</span>
-            <Formula latex="q_h = e^{-\alpha t}(A\cos\omega_d t + B\sin\omega_d t)" bloque />
+            <span>Oscila</span>
+            <Formula latex="e^{-\alpha t}(A\cos\omega_d t + B\sin\omega_d t)" bloque />
           </div>
           <div className="formas__fila formas__fila--critico">
-            <span>Δ = 0</span>
-            <Formula latex="q_h = (A + B\,t)\,e^{-\alpha t}" bloque />
+            <span>Justo</span>
+            <Formula latex="(A + B\,t)\,e^{-\alpha t}" bloque />
           </div>
           <div className="formas__fila formas__fila--sobreamortiguado">
-            <span>Δ &gt; 0</span>
-            <Formula latex="q_h = A\,e^{r_1 t} + B\,e^{r_2 t}" bloque />
+            <span>Lento</span>
+            <Formula latex="A\,e^{r_1 t} + B\,e^{r_2 t}" bloque />
           </div>
         </div>
+        <p className="texto-2">
+          Los números <Formula latex="A" /> y <Formula latex="B" /> se ajustan para que al empezar el capacitor esté vacío: <Formula latex="q(0) = 0" /> e{' '}
+          <Formula latex="i(0) = 0" />. El término <Formula latex="e^{-\alpha t}" /> hace que todo se apague con el tiempo.
+        </p>
       </>
     ),
   },
   {
     id: 'rk4',
     bloque: 1,
-    seccion: 'II · El modelo',
-    titulo: 'Runge-Kutta 4: la comprobación numérica',
+    seccion: 'II · Comprobación',
+    titulo: 'La computadora lo comprueba',
     encuadre: { posicion: [-8, 6, -7], objetivo: [0, 0.4, 0] },
     autoRotar: true,
     velocidadGiro: 0.0007,
@@ -391,9 +456,12 @@ export const DIAPOSITIVAS: Diapositiva[] = [
     ejecutar: true,
     contenido: (
       <>
-        <p>Para fuentes variables (pulso, onda cuadrada, sinusoidal) se integra el sistema de primer orden equivalente:</p>
-        <Formula latex="x_1 = q,\; x_2 = i \;\Rightarrow\; x_1' = x_2,\quad x_2' = \frac{E(t) - R\,x_2 - x_1/C}{L}" bloque />
-        <Formula latex="\mathbf{x}_{n+1} = \mathbf{x}_n + \tfrac{h}{6}(\mathbf{k}_1 + 2\mathbf{k}_2 + 2\mathbf{k}_3 + \mathbf{k}_4)" bloque />
+        <p>
+          El método de <b>Runge-Kutta 4</b> divide el tiempo en pasitos muy pequeños. En cada pasito mira cuatro veces hacia dónde va la curva y avanza con el
+          promedio.
+        </p>
+        <Formula latex="q_{\text{siguiente}} = q_{\text{actual}} + h\cdot\underbrace{\tfrac{k_1 + 2k_2 + 2k_3 + k_4}{6}}_{\text{pendiente promedio}}" bloque />
+        <p>Comparamos ese resultado con la fórmula exacta. La diferencia es diminuta:</p>
         <TablaValidacion />
         <Transicion indice={1} />
       </>
@@ -579,7 +647,10 @@ export const DIAPOSITIVAS: Diapositiva[] = [
         <div className="creditos">
           {BLOQUES.map((b) => (
             <div key={b.integrante} className="creditos__fila">
-              <span className="creditos__numero mono">{b.numero}</span>
+              <span className="creditos__numero mono">
+                <span className="expositor__punto" style={{ background: b.color }} />
+                {b.numero}
+              </span>
               <span className="creditos__nombre">{b.integrante}</span>
               <span className="creditos__rol">{b.conclusion}</span>
             </div>

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   CONDICIONES_INICIALES_REPOSO,
   DESCRIPCION_AMORTIGUAMIENTO,
@@ -10,6 +10,7 @@ import {
 } from '@/engine';
 import { Formula } from '@/components/common/Formula';
 import { Icono } from '@/components/common/Icono';
+import { animarLetras } from '@/utils/animacionFormulas';
 import { aPrecision } from '@/utils/formato';
 
 interface PropiedadesReproductor {
@@ -20,10 +21,27 @@ interface PropiedadesReproductor {
 
 const VELOCIDADES = [0.5, 1, 1.5, 2];
 /** Tiempo (ms a velocidad 1) que tarda en aparecer cada expresión de un paso. */
-const TIEMPO_EXPRESION = 1700;
-const PAUSA_FINAL = 2600;
+const TIEMPO_EXPRESION = 3400;
+const PAUSA_FINAL = 4200;
 const ANCHO = 360;
 const ALTO = 150;
+
+/** Expresión cuyos símbolos caen y se acomodan al aparecer. */
+function ExpresionAnimada({ latex }: { latex: string }) {
+  const nodo = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (!nodo.current) return;
+    const animacion = animarLetras(nodo.current, { escalonado: 0.045 });
+    return () => {
+      animacion?.kill();
+    };
+  }, [latex]);
+  return (
+    <div ref={nodo}>
+      <Formula latex={latex} bloque />
+    </div>
+  );
+}
 
 /**
  * Reproductor del procedimiento: cada paso se construye expresión por expresión,
@@ -122,13 +140,13 @@ export function ReproductorProcedimiento({ pasos, parametros, tolerancia }: Prop
                   <motion.div
                     key={k}
                     className={`reproductor__expresion ${k === visibles - 1 ? 'reproductor__expresion--nueva' : ''} ${esUltima ? 'reproductor__expresion--resultado' : ''}`}
-                    initial={{ opacity: 0, y: 14, filter: 'blur(5px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.5 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
                   >
                     {k > 0 && <span className="reproductor__flecha" aria-hidden="true">⟶</span>}
                     {esUltima && <span className="reproductor__etiqueta mono">resultado</span>}
-                    <Formula latex={f} bloque />
+                    <ExpresionAnimada latex={f} />
                   </motion.div>
                 );
               })}

@@ -22,6 +22,8 @@ interface PropiedadesEscena {
   /** Desplaza el encuadre [x, y] (fracción de la distancia) para dejar espacio a un panel. */
   desplazamiento?: readonly [number, number];
   interactiva?: boolean;
+  /** Congela la cámara sin desactivar los eventos del puntero (p. ej. al arrastrar piezas). */
+  camaraBloqueada?: boolean;
   alClicVacio?: () => void;
   children: (paleta: Paleta3D) => ReactNode;
   className?: string;
@@ -33,8 +35,9 @@ function ControlCamara({
   autoRotar,
   velocidadGiro = 0.0012,
   interactiva,
+  camaraBloqueada = false,
   desplazamiento = [0, 0],
-}: Pick<PropiedadesEscena, 'encuadre' | 'claveEncuadre' | 'autoRotar' | 'velocidadGiro' | 'interactiva' | 'desplazamiento'>) {
+}: Pick<PropiedadesEscena, 'encuadre' | 'claveEncuadre' | 'autoRotar' | 'velocidadGiro' | 'interactiva' | 'camaraBloqueada' | 'desplazamiento'>) {
   const controles = useRef<CameraControls>(null);
   // En pantallas verticales (celulares) la cámara se aleja para que el circuito quepa a lo ancho.
   const aspecto = useThree((s) => s.size.width / Math.max(1, s.size.height));
@@ -64,7 +67,7 @@ function ControlCamara({
     <CameraControls
       ref={controles}
       makeDefault
-      enabled={interactiva}
+      enabled={interactiva && !camaraBloqueada}
       minDistance={1.6}
       maxDistance={30}
       maxPolarAngle={Math.PI * 0.495}
@@ -101,6 +104,7 @@ export function Escena3D({
   foco = null,
   desplazamiento,
   interactiva = true,
+  camaraBloqueada,
   alClicVacio,
   children,
   className,
@@ -149,6 +153,7 @@ export function Escena3D({
         autoRotar={autoRotar}
         velocidadGiro={velocidadGiro}
         interactiva={interactiva}
+        camaraBloqueada={camaraBloqueada}
         desplazamiento={desplazamiento}
       />
     </Canvas>

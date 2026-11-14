@@ -89,7 +89,7 @@ const GUION: Guion[] = [
     id: 'capacitor',
     titulo: 'El capacitor: carga acumulada',
     bloque: 0,
-    decir: 'Dos placas separadas por un dieléctrico. Su carga q(t) es la incógnita de la EDO. Cerrar el bloque con la conclusión y ceder la palabra a Daniel.',
+    decir: 'Dos placas separadas por un dieléctrico. Su carga q(t) es la incógnita de la EDO. Cerrar el bloque con la conclusión y ceder la palabra a Alejandro.',
     formulas: ['V_C = \\frac{q}{C}', 'i = \\frac{dq}{dt}'],
     animacion: 'Rayos X y despiece del capacitor; el número de cargas rojas y azules es proporcional a q(t).',
   },
@@ -97,39 +97,55 @@ const GUION: Guion[] = [
     id: 'capitulo-2',
     titulo: BLOQUES[1].titulo,
     bloque: 1,
-    decir: 'Anunciar el capítulo II: de las leyes físicas al modelo matemático y a sus soluciones.',
+    decir: 'Anunciar el capítulo II: vamos a convertir lo que hace el circuito en una ecuación y a resolverla paso a paso, sin saltarnos nada.',
     animacion: 'Vista cenital del circuito girando.',
   },
   {
-    id: 'kirchhoff',
-    titulo: 'De Kirchhoff a la ecuación diferencial',
+    id: 'piezas',
+    titulo: 'Las piezas de la ecuación',
     bloque: 1,
-    decir: 'La ecuación se construye en pantalla en cuatro pasos: balance de voltajes, sustitución de cada caída, relación i = q′ y ecuación final en q(t).',
-    formulas: ['E(t) = V_L + V_R + V_C', "L\\,q'' + R\\,q' + \\frac{1}{C}\\,q = E(t)"],
-    animacion: 'Derivación progresiva con el paso actual resaltado.',
+    decir: 'Leer la ecuación como una frase. q es lo que buscamos (la carga), q′ es la corriente (qué tan rápido cambia la carga), q″ es qué tan rápido cambia la corriente, L, R y C son números conocidos y E es la batería. Es de segundo orden porque aparece hasta q″.',
+    formulas: ["L\\,q'' + R\\,q' + \\frac{1}{C}\\,q = E(t)"],
+    animacion: 'El circuito funciona de fondo; cada término se puede tocar para ver su significado.',
   },
   {
-    id: 'caracteristica',
-    titulo: 'Ecuación característica y discriminante',
+    id: 'kirchhoff',
+    titulo: 'La regla de la malla',
     bloque: 1,
-    decir: 'Proponer q = e^{rt}, obtener el polinomio característico, resolverlo y explicar que el signo del discriminante define los tres casos y la resistencia crítica.',
-    formulas: ['L r^2 + R r + \\frac{1}{C} = 0', 'r_{1,2} = -\\alpha \\pm \\sqrt{\\alpha^2 - \\omega_0^2}', '\\Delta = R^2 - \\frac{4L}{C}'],
-    animacion: 'La derivación se construye paso a paso.',
+    decir: 'En palabras: todo el voltaje que pone la batería se reparte entre las tres piezas. Luego se cambia cada voltaje por su fórmula y, como la corriente es la rapidez con que cambia la carga, todo queda escrito con q.',
+    formulas: ['E = V_L + V_R + V_C', "L\\,q'' + R\\,q' + \\frac{1}{C}\\,q = E(t)"],
+    animacion: 'La ecuación se construye en cuatro pasos; los símbolos de cada paso caen y se acomodan. El botón «Siguiente paso» permite marcar el ritmo.',
+  },
+  {
+    id: 'exponencial',
+    titulo: 'Probamos con una exponencial',
+    bloque: 1,
+    decir: 'La idea clave: buscamos una función que al derivarla siga pareciéndose a sí misma. e^{rt} cumple eso: al derivar solo aparece r multiplicando. Al reemplazarla, como e^{rt} nunca es cero, queda una ecuación de segundo grado como las del colegio, con a = L, b = R y c = 1/C.',
+    formulas: ['q = e^{rt}', "q' = r e^{rt},\\quad q'' = r^2 e^{rt}", 'L r^2 + R r + \\frac{1}{C} = 0'],
+    animacion: 'Derivación progresiva en cuatro pasos.',
+  },
+  {
+    id: 'discriminante',
+    titulo: 'El número que decide todo',
+    bloque: 1,
+    decir: 'Con la fórmula general aparece una raíz cuadrada. Lo que va dentro, Δ = R² − 4L/C, decide todo: negativo oscila como un columpio, cero llega justo sin pasarse, positivo llega lento como una puerta con freno. Con R = 10 Ω da −1900, así que oscila. La frontera es R crítica ≈ 44.72 Ω.',
+    formulas: ['r = \\frac{-R \\pm \\sqrt{\\Delta}}{2L}', '\\Delta = R^2 - \\frac{4L}{C}', 'R_c = 2\\sqrt{L/C} \\approx 44.72\\ \\Omega'],
+    animacion: 'Cálculo con números reales y los tres casos con colores.',
   },
   {
     id: 'soluciones',
-    titulo: 'Las tres formas de la solución',
+    titulo: 'Las tres respuestas posibles',
     bloque: 1,
-    decir: 'Solución general = particular (q_p = CE₀) + homogénea. Mostrar la forma de q_h en cada caso y cómo A y B salen de las condiciones iniciales.',
-    formulas: ['q_h = e^{-\\alpha t}(A\\cos\\omega_d t + B\\sin\\omega_d t)', 'q_h = (A + Bt)e^{-\\alpha t}', 'q_h = A e^{r_1 t} + B e^{r_2 t}'],
-    animacion: 'Las tres formas aparecen escalonadas con el color de cada régimen.',
+    decir: 'El capacitor siempre termina con la misma carga, C·E₀; lo que cambia es cómo llega: oscilando, justo o lento. A y B se ajustan para que al empezar el capacitor esté vacío. El factor e^{−αt} hace que todo se apague con el tiempo.',
+    formulas: ['e^{-\\alpha t}(A\\cos\\omega_d t + B\\sin\\omega_d t)', '(A + Bt)e^{-\\alpha t}', 'A e^{r_1 t} + B e^{r_2 t}'],
+    animacion: 'Las tres formas aparecen con el color de cada caso.',
   },
   {
     id: 'rk4',
-    titulo: 'Runge-Kutta 4: la comprobación numérica',
+    titulo: 'La computadora lo comprueba',
     bloque: 1,
-    decir: 'Para fuentes variables se integra el sistema de primer orden con RK4. La tabla muestra el error relativo real entre RK4 y la solución analítica. Cerrar el bloque y ceder la palabra a Sebastián.',
-    formulas: ["x_1' = x_2,\\quad x_2' = \\frac{E(t) - R x_2 - x_1/C}{L}", '\\mathbf{x}_{n+1} = \\mathbf{x}_n + \\tfrac{h}{6}(\\mathbf{k}_1 + 2\\mathbf{k}_2 + 2\\mathbf{k}_3 + \\mathbf{k}_4)'],
+    decir: 'Runge-Kutta 4 divide el tiempo en pasitos pequeños; en cada uno mira cuatro veces hacia dónde va la curva y avanza con el promedio. Al compararlo con la fórmula exacta, la diferencia es diminuta. Cerrar el bloque y ceder la palabra a Sebastián.',
+    formulas: ['q_{\\text{siguiente}} = q_{\\text{actual}} + h\\cdot\\tfrac{k_1 + 2k_2 + 2k_3 + k_4}{6}'],
     animacion: 'Tabla de validación calculada en vivo por el motor.',
   },
   {
@@ -266,7 +282,7 @@ const bloqueHTML = (indice: 0 | 1 | 2) => {
   return `
   <section class="bloque salto">
     <div class="bloque__cabecera">
-      <span class="bloque__numero">${b.numero}</span>
+      <span class="bloque__numero" style="color:${b.color}">${b.numero}</span>
       <div>
         <p class="antetitulo">Bloque ${b.numero} · ${b.duracion}</p>
         <h2>${b.integrante}</h2>
@@ -356,6 +372,7 @@ th { color: #4a5a6c; font-weight: 600; border-bottom: 0.8pt solid #9fb0c2; }
 .pregunta p:first-child { font-weight: 600; margin-bottom: 2pt; }
 .simbolo { font-family: KaTeX_Math, 'Times New Roman', serif; font-style: italic; font-size: 12pt; color: #0e7490; }
 .dos { columns: 2; column-gap: 8mm; }
+.punto { display: inline-block; width: 8pt; height: 8pt; border-radius: 50%; margin-right: 5pt; vertical-align: middle; }
 </style></head><body>
 
 <section class="portada">
@@ -365,7 +382,7 @@ th { color: #4a5a6c; font-weight: 600; border-bottom: 0.8pt solid #9fb0c2; }
     <p class="subtitulo">Guía de exposición: circuitos RLC en serie y ecuaciones diferenciales lineales de segundo orden</p>
   </div>
   <div class="creditos">
-    ${BLOQUES.map((b) => `<div><span class="num">${b.numero}</span><span><strong>${b.integrante}</strong><em>${b.titulo}</em></span></div>`).join('')}
+    ${BLOQUES.map((b) => `<div><span class="num"><i class="punto" style="background:${b.color}"></i>${b.numero}</span><span><strong>${b.integrante}</strong><em>${b.titulo}</em></span></div>`).join('')}
   </div>
   <p class="pie-portada">${EQUIPO.programa} · ${EQUIPO.semestre}<br>Profesor ${EQUIPO.profesor}<br>${fecha}</p>
 </section>
@@ -383,12 +400,12 @@ th { color: #4a5a6c; font-weight: 600; border-bottom: 0.8pt solid #9fb0c2; }
     <tbody>
     ${BLOQUES.map((b, k) => {
       const numeros = GUION.map((g, i) => (g.bloque === k ? i + 1 : null)).filter(Boolean) as number[];
-      return `<tr><td>${b.numero}</td><td>${b.integrante}</td><td>${b.titulo}</td><td>${numeros[0]}–${numeros[numeros.length - 1]}</td><td>${b.duracion}</td></tr>`;
+      return `<tr><td><i class="punto" style="background:${b.color}"></i>${b.numero}</td><td>${b.integrante}</td><td>${b.titulo}</td><td>${numeros[0]}–${numeros[numeros.length - 1]}</td><td>${b.duracion}</td></tr>`;
     }).join('')}
     <tr><td>—</td><td>Todo el equipo</td><td>Conclusión</td><td>${GUION.length}</td><td>≈ 1 min</td></tr>
     </tbody>
   </table>
-  <p class="nota">La distribución sigue la continuidad conceptual: física de los componentes → modelo matemático → interpretación y aplicaciones. El bloque II tiene menos diapositivas porque cada una es más densa matemáticamente.</p>
+  <p class="nota">La distribución sigue la continuidad conceptual: física de los componentes → modelo matemático → interpretación y aplicaciones. En la presentación cada diapositiva muestra un punto del color del integrante que la expone (en el cierre aparecen los tres). El bloque matemático está dividido en pasos pequeños y explicados en palabras sencillas.</p>
 </section>
 
 ${bloqueHTML(0)}

@@ -6,6 +6,8 @@
 export interface BloqueExposicion {
   numero: 'I' | 'II' | 'III';
   integrante: string;
+  /** Color que identifica al integrante en las diapositivas. */
+  color: string;
   titulo: string;
   duracion: string;
   enfoque: string;
@@ -18,34 +20,44 @@ export interface BloqueExposicion {
 export const BLOQUES: BloqueExposicion[] = [
   {
     numero: 'I',
-    integrante: 'Alejandro Piedrahita',
+    integrante: 'Daniel Colorado',
+    color: '#22d3ee',
     titulo: 'El circuito y sus componentes',
     duracion: '≈ 5 min',
     enfoque: 'Fundamento físico: qué es cada elemento, qué hay dentro y qué ley lo describe.',
     temas: ['Circuito RLC en serie', 'Fuente de voltaje', 'Interruptor y condiciones iniciales', 'Resistor', 'Inductor', 'Capacitor'],
     formulas: ['V_R = R\\,i', 'V_L = L\\,\\frac{di}{dt}', 'V_C = \\frac{q}{C}', 'i = \\frac{dq}{dt}', 'q(0) = 0,\\; i(0) = 0'],
     conclusion: 'Cada componente aporta una relación entre voltaje y carga: R con la primera derivada, L con la segunda y C con la carga misma.',
-    transicion: 'Daniel unirá estas tres relaciones con la ley de Kirchhoff para obtener la ecuación diferencial.',
+    transicion: 'Alejandro juntará estas tres relaciones en una sola ecuación y mostrará cómo se resuelve.',
   },
   {
     numero: 'II',
-    integrante: 'Daniel Colorado',
+    integrante: 'Alejandro Piedrahita',
+    color: '#f59e0b',
     titulo: 'Del circuito a la ecuación diferencial',
-    duracion: '≈ 5 min',
-    enfoque: 'Modelo matemático: deducción de la EDO, ecuación característica, soluciones y método numérico.',
-    temas: ['Segunda ley de Kirchhoff', 'EDO lineal de segundo orden', 'Ecuación característica y discriminante', 'Soluciones de los tres casos y condiciones iniciales', 'Runge-Kutta 4 y validación'],
+    duracion: '≈ 6 min',
+    enfoque: 'El modelo matemático contado paso a paso y en palabras sencillas: de dónde sale la ecuación, cómo se resuelve y cómo se comprueba.',
+    temas: [
+      'Las piezas de la ecuación',
+      'La regla de la malla (Kirchhoff)',
+      'Probar con una exponencial',
+      'El número que decide todo: el discriminante',
+      'Las tres soluciones y las condiciones iniciales',
+      'La comprobación con la computadora (RK4)',
+    ],
     formulas: [
       "L\\,q'' + R\\,q' + \\frac{1}{C}\\,q = E(t)",
       'L\\,r^2 + R\\,r + \\frac{1}{C} = 0',
-      '\\alpha = \\frac{R}{2L},\\; \\omega_0 = \\frac{1}{\\sqrt{LC}},\\; \\zeta = \\frac{\\alpha}{\\omega_0}',
+      '\\Delta = R^2 - \\frac{4L}{C}',
       'R_c = 2\\sqrt{L/C}',
     ],
-    conclusion: 'El signo del discriminante decide la forma de la solución; la solución analítica y RK4 coinciden con error relativo menor a 10⁻⁶.',
+    conclusion: 'Todo se reduce a una ecuación de segundo grado: el signo de lo que va dentro de la raíz decide si el circuito oscila, llega justo o llega lento, y la computadora confirma el resultado.',
     transicion: 'Sebastián mostrará qué significan físicamente esos tres casos y dónde aparecen en la ingeniería.',
   },
   {
     numero: 'III',
     integrante: 'Sebastián Patiño',
+    color: '#a78bfa',
     titulo: 'Comportamiento, resultados y aplicaciones',
     duracion: '≈ 6 min',
     enfoque: 'Interpretación física: los tres regímenes en vivo, su comparación y aplicaciones reales justificadas.',

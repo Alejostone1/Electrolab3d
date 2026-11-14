@@ -165,8 +165,11 @@ export default function PaginaPresentacion() {
           >
             <div className="diapositiva__meta">
               <span className="etiqueta-seccion">{diapositiva.seccion}</span>
-              <span className="diapositiva__expositor">
-                {diapositiva.bloque === null ? 'Expone: todo el equipo' : `Expone: ${BLOQUES[diapositiva.bloque].integrante}`}
+              {/* Punto de color del integrante que expone (todos en el cierre). */}
+              <span className="expositor" role="img" aria-label={diapositiva.bloque === null ? 'Todo el equipo' : BLOQUES[diapositiva.bloque].integrante}>
+                {(diapositiva.bloque === null ? BLOQUES : [BLOQUES[diapositiva.bloque]]).map((b) => (
+                  <span key={b.integrante} className="expositor__punto" style={{ background: b.color }} title={b.integrante} />
+                ))}
               </span>
             </div>
             {diapositiva.capitulo && diapositiva.bloque !== null && (

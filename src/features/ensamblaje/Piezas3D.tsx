@@ -1,4 +1,4 @@
-import { useFrame, type ThreeEvent } from '@react-three/fiber';
+import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { bandasResistor, muestrearEn, posicionHueco, type Pieza } from '@/engine';
@@ -62,12 +62,15 @@ function geometriaTerminales(pieza: Pieza) {
 export function Pieza3D({ pieza, paleta, seleccionada, conError, enLazo }: PropiedadesPieza) {
   const iniciarArrastre = useEnsamblaje((s) => s.iniciarArrastre);
   const herramienta = useEnsamblaje((s) => s.herramienta.modo);
+  const controles = useThree((s) => s.controls) as { enabled: boolean } | null;
   const g = geometriaTerminales(pieza);
   const estado = { seleccionada, conError, enLazo };
 
   const alPresionar = (evento: ThreeEvent<PointerEvent>) => {
     if (herramienta !== 'seleccionar') return;
     evento.stopPropagation();
+    // La cámara se congela en este mismo evento para que no gire mientras se arrastra.
+    if (controles) controles.enabled = false;
     iniciarArrastre(pieza.id);
   };
 
