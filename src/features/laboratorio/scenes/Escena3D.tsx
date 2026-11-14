@@ -1,5 +1,6 @@
 import { CameraControls, ContactShadows, Environment, Lightformer } from '@react-three/drei';
-import { Canvas, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import * as THREE from 'three';
 import { Suspense, useEffect, useRef, type ReactNode } from 'react';
 import { PALETAS, type Paleta3D } from '../components-3d/paleta';
 import { usePreferencias } from '@/store/usePreferencias';
@@ -14,6 +15,10 @@ interface PropiedadesEscena {
   /** Cambia para forzar un nuevo encuadre aunque las coordenadas coincidan. */
   claveEncuadre?: number | string;
   autoRotar?: boolean;
+  /** Velocidad de la deriva orbital (rad por cuadro). */
+  velocidadGiro?: number;
+  /** Punto que ilumina un foco cenital (componente que se está explicando). */
+  foco?: readonly [number, number, number] | null;
   /** Desplaza el encuadre [x, y] (fracción de la distancia) para dejar espacio a un panel. */
   desplazamiento?: readonly [number, number];
   interactiva?: boolean;
@@ -26,9 +31,10 @@ function ControlCamara({
   encuadre,
   claveEncuadre,
   autoRotar,
+  velocidadGiro = 0.0012,
   interactiva,
   desplazamiento = [0, 0],
-}: Pick<PropiedadesEscena, 'encuadre' | 'claveEncuadre' | 'autoRotar' | 'interactiva' | 'desplazamiento'>) {
+}: Pick<PropiedadesEscena, 'encuadre' | 'claveEncuadre' | 'autoRotar' | 'velocidadGiro' | 'interactiva' | 'desplazamiento'>) {
   const controles = useRef<CameraControls>(null);
   // En pantallas verticales (celulares) la cámara se aleja para que el circuito quepa a lo ancho.
   const aspecto = useThree((s) => s.size.width / Math.max(1, s.size.height));
@@ -47,12 +53,12 @@ function ControlCamara({
     if (!autoRotar) return;
     let id = 0;
     const girar = () => {
-      controles.current?.rotate(0.0012, 0, false);
+      controles.current?.rotate(velocidadGiro, 0, false);
       id = requestAnimationFrame(girar);
     };
     id = requestAnimationFrame(girar);
     return () => cancelAnimationFrame(id);
-  }, [autoRotar]);
+  }, [autoRotar, velocidadGiro]);
 
   return (
     <CameraControls
@@ -68,11 +74,31 @@ function ControlCamara({
   );
 }
 
+/** Foco cenital que se desliza suavemente hacia el componente en explicación. */
+function FocoEscenico({ objetivo }: { objetivo: readonly [number, number, number] | null }) {
+  const luz = useRef<THREE.SpotLight>(null);
+  const blanco = useRef<THREE.Object3D>(new THREE.Object3D());
+  useFrame((_, delta) => {
+    if (!luz.current) return;
+    const d = Math.min(delta, 0.1);
+    luz.current.intensity = THREE.MathUtils.damp(luz.current.intensity, objetivo ? 90 : 0, 3, d);
+    if (objetivo) {
+      blanco.current.position.lerp(new THREE.Vector3(objetivo[0], objetivo[1], objetivo[2]), 1 - Math.exp(-3 * d));
+      luz.current.position.set(blanco.current.position.x + 1.5, 7, blanco.current.position.z + 2);
+    }
+    luz.current.target = blanco.current;
+    blanco.current.updateMatrixWorld();
+  });
+  return <spotLight ref={luz} angle={0.32} penumbra={0.7} distance={18} intensity={0} color="#e8f4ff" />;
+}
+
 /** Lienzo 3D común (laboratorio, inicio y presentación) con iluminación de estudio. */
 export function Escena3D({
   encuadre,
   claveEncuadre,
   autoRotar = false,
+  velocidadGiro,
+  foco = null,
   desplazamiento,
   interactiva = true,
   alClicVacio,
@@ -96,7 +122,8 @@ export function Escena3D({
     >
       <color attach="background" args={[paleta.fondo]} />
       <fog attach="fog" args={[paleta.niebla, 22, 48]} />
-      <ambientLight intensity={tema === 'dark' ? 0.35 : 0.7} />
+      <ambientLight intensity={(tema === 'dark' ? 0.35 : 0.7) * (foco ? 0.55 : 1)} />
+      <FocoEscenico objetivo={foco} />
       <directionalLight
         position={[6, 12, 6]}
         intensity={tema === 'dark' ? 1.4 : 1.8}
@@ -120,6 +147,7 @@ export function Escena3D({
         encuadre={encuadre}
         claveEncuadre={claveEncuadre}
         autoRotar={autoRotar}
+        velocidadGiro={velocidadGiro}
         interactiva={interactiva}
         desplazamiento={desplazamiento}
       />

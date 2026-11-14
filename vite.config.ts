@@ -23,6 +23,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    include: ['tests/{mathematics,electrical,simulation}/**/*.test.ts'],
+    include: ['tests/{mathematics,electrical,simulation,circuitos}/**/*.test.ts'],
   },
 });

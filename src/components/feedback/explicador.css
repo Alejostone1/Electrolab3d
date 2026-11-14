@@ -1,0 +1,69 @@
+.simbolo {
+  cursor: help;
+  border-radius: 3px;
+  transition: background-color 140ms ease, color 140ms ease;
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--acento) 45%, transparent);
+}
+.simbolo:hover,
+.simbolo:focus-visible {
+  background: var(--acento-suave);
+  color: var(--acento);
+  outline: none;
+}
+
+.explicador {
+  position: fixed;
+  z-index: 200;
+  width: min(290px, calc(100vw - 20px));
+  padding: 12px 14px;
+  border-radius: var(--radio-m);
+  background: var(--panel-solido);
+  border: 1px solid var(--borde-fuerte);
+  box-shadow: var(--sombra);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--texto);
+}
+.explicador__cabecera {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--borde);
+}
+.explicador__simbolo {
+  font-family: 'KaTeX_Math', 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--acento);
+}
+.explicador__nombre {
+  flex: 1;
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+}
+.explicador__cerrar {
+  border: 0;
+  background: transparent;
+  color: var(--texto-2);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.explicador__unidad {
+  margin: 0 0 6px;
+  font-family: var(--fuente-mono);
+  font-size: 0.75rem;
+  color: var(--texto-2);
+}
+.explicador ul {
+  margin: 0;
+  padding-left: 1em;
+  display: grid;
+  gap: 4px;
+}
+.explicador li::marker {
+  color: var(--acento);
+}

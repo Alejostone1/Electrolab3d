@@ -18,3 +18,5 @@ export * from './simulation/interpolacion';
 export * from './simulation/estadoCircuito';
 export * from './simulation/validaciones';
 export * from './simulation/exportacion';
+export * from './simulation/analogoMecanico';
+export * from './circuitos/protoboard';

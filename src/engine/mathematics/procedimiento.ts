@@ -14,10 +14,69 @@ import { resolverAnaliticamente } from './solucionAnalitica';
 export interface PasoProcedimiento {
   numero: number;
   titulo: string;
+  /** Operación concreta que se aplica en este paso. */
+  operacion: string;
   explicacion: string;
+  /** Por qué es válido o necesario este paso. */
+  justificacion: string;
   formulas: string[];
   nota?: string;
 }
+
+const DETALLES: Record<string, { operacion: string; justificacion: string }> = {
+  'Segunda ley de Kirchhoff': {
+    operacion: 'Plantear el balance de voltajes en la malla',
+    justificacion: 'La energía por unidad de carga se conserva al recorrer un lazo cerrado.',
+  },
+  'Caídas de voltaje en cada componente': {
+    operacion: 'Escribir la ley constitutiva de cada elemento',
+    justificacion: 'Cada componente relaciona voltaje y corriente de forma distinta: proporcional, a través de la derivada o de la carga.',
+  },
+  'Relación entre corriente y carga': {
+    operacion: 'Expresar i y di/dt en términos de q',
+    justificacion: 'Así la ecuación queda con una sola incógnita, q(t), que además da el estado del capacitor.',
+  },
+  'Ecuación diferencial de segundo orden': {
+    operacion: 'Sustituir las caídas y la relación i = q′',
+    justificacion: 'Obtener una EDO lineal con coeficientes constantes, cuya teoría de solución es completa.',
+  },
+  Normalización: {
+    operacion: 'Dividir toda la ecuación entre L',
+    justificacion: 'L > 0, así que dividir no cambia las soluciones; aparecen α y ω₀, los parámetros que gobiernan la dinámica.',
+  },
+  'Ecuación característica': {
+    operacion: 'Proponer q = e^{rt} en la ecuación homogénea',
+    justificacion: 'La derivada de una exponencial es proporcional a ella misma, y e^{rt} nunca se anula.',
+  },
+  'Cálculo de las raíces': {
+    operacion: 'Aplicar la fórmula cuadrática',
+    justificacion: 'La ecuación característica es un polinomio de grado 2 con coeficientes reales.',
+  },
+  'Clasificación del amortiguamiento': {
+    operacion: 'Comparar ζ con 1 (o R con R crítica)',
+    justificacion: 'El signo del discriminante determina si las raíces son complejas, repetidas o reales distintas.',
+  },
+  'Solución homogénea': {
+    operacion: 'Elegir la forma de q_h según el tipo de raíces',
+    justificacion: 'Cada tipo de raíz genera un par de soluciones linealmente independientes.',
+  },
+  'Solución particular': {
+    operacion: 'Proponer una solución con la forma de la fuente',
+    justificacion: 'Por linealidad, la solución general es la homogénea más una particular cualquiera.',
+  },
+  'Aplicación de condiciones iniciales': {
+    operacion: 'Imponer q(0) y q′(0) para hallar A y B',
+    justificacion: 'Dos constantes requieren dos condiciones: el teorema de existencia y unicidad garantiza una única solución.',
+  },
+  'Solución final': {
+    operacion: 'Sustituir las constantes en la solución general',
+    justificacion: 'Es la única función que cumple la EDO y las condiciones iniciales.',
+  },
+  'Interpretación física': {
+    operacion: 'Leer la solución en términos de energía y tiempo',
+    justificacion: 'La matemática solo es útil si describe lo que el circuito realmente hace.',
+  },
+};
 
 export function generarProcedimiento(
   parametros: ParametrosCircuito,
@@ -34,7 +93,7 @@ export function generarProcedimiento(
   const RL = R / L;
   const LC = 1 / (L * C);
 
-  const pasos: Omit<PasoProcedimiento, 'numero'>[] = [];
+  const pasos: Omit<PasoProcedimiento, 'numero' | 'operacion' | 'justificacion'>[] = [];
 
   pasos.push({
     titulo: 'Segunda ley de Kirchhoff',
@@ -98,7 +157,7 @@ export function generarProcedimiento(
   ];
   if (raices.tipo === 'complejas-conjugadas') {
     formulaRaices.push(
-      `r_{1,2} = ${n(raices.r1.re)} \\pm ${n(raices.r1.im)}\\,i \\quad (\\omega_d = ${n(raices.r1.im)}\\,\\text{rad/s})`,
+      `r_{1,2} = ${n(raices.r1.re)} \\pm ${n(raices.r1.im)}\\,\\mathrm{i} \\quad (\\omega_d = ${n(raices.r1.im)}\\,\\text{rad/s})`,
     );
   } else if (raices.tipo === 'reales-repetidas') {
     formulaRaices.push(`r_1 = r_2 = -\\alpha = ${n(raices.r1.re)}`);
@@ -232,5 +291,5 @@ export function generarProcedimiento(
     ],
   });
 
-  return pasos.map((paso, indice) => ({ ...paso, numero: indice + 1 }));
+  return pasos.map((paso, indice) => ({ ...paso, ...DETALLES[paso.titulo], numero: indice + 1 }));
 }

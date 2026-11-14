@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Formula } from '@/components/common/Formula';
-import { Icono } from '@/components/common/Icono';
 import { FICHAS } from '@/data/componentes';
 import { ANALOGIA, APLICACIONES, FORMULARIO, GLOSARIO, REFERENCIAS, UNIDADES } from '@/data/documentacion';
 import './aplicaciones.css';
@@ -42,11 +41,9 @@ export default function PaginaAplicaciones() {
         {seccion === 'aplicaciones' && (
           <>
             <div className="rejilla">
-              {APLICACIONES.map((a) => (
+              {APLICACIONES.map((a, k) => (
                 <article key={a.titulo} className="tarjeta tarjeta--interactiva aplicacion">
-                  <span className="funcionalidad__icono aplicacion__icono">
-                    <Icono nombre={a.icono} tamano={22} />
-                  </span>
+                  <span className="aplicacion__numero mono">{String(k + 1).padStart(2, '0')}</span>
                   <h3>{a.titulo}</h3>
                   <p className="texto-2 texto-s">{a.texto}</p>
                   <Formula latex={a.ecuacion} bloque />

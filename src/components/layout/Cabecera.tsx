@@ -64,9 +64,9 @@ export function Cabecera() {
           <Logotipo />
         </Link>
         <nav className="cabecera__nav solo-escritorio" aria-label="Navegación principal">
-          {ENLACES.slice(1, 7).map((enlace) => (
+          {ENLACES.slice(1, 8).map((enlace) => (
             <NavLink key={enlace.ruta} to={enlace.ruta} className="cabecera__enlace">
-              {enlace.nombre}
+              {enlace.corto}
             </NavLink>
           ))}
         </nav>

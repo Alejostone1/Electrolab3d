@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://electrolab3d.vercel.app"><img alt="Demo" src="https://img.shields.io/badge/demo-en%20vivo-22D3EE?style=for-the-badge&logo=vercel&logoColor=white"></a>
-  <img alt="Pruebas" src="https://img.shields.io/badge/pruebas-41%20aprobadas-34D399?style=for-the-badge&logo=vitest&logoColor=white">
+  <img alt="Pruebas" src="https://img.shields.io/badge/pruebas-55%20aprobadas-34D399?style=for-the-badge&logo=vitest&logoColor=white">
   <img alt="React" src="https://img.shields.io/badge/React-18-38BDF8?style=for-the-badge&logo=react&logoColor=white">
   <img alt="Three.js" src="https://img.shields.io/badge/Three.js-R3F-F1F5F9?style=for-the-badge&logo=threedotjs&logoColor=black">
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
@@ -18,11 +18,11 @@
 
 ## 👥 Equipo
 
-| | Integrante | Rol en la sustentación |
+| Bloque | Integrante | Capítulo de la presentación |
 |:-:|---|---|
-| 🧑‍💻 | **Alejandro Piedrahita** | Introducción y modelo matemático |
-| 🧑‍💻 | **Daniel Colorado** | Componentes y simulación en vivo |
-| 🧑‍💻 | **Sebastián Patiño** | Análisis, aplicaciones y cierre |
+| I | **Alejandro Piedrahita** | El circuito y sus componentes |
+| II | **Daniel Colorado** | Del circuito a la ecuación diferencial |
+| III | **Sebastián Patiño** | Comportamiento, resultados y aplicaciones |
 
 **Proyecto final de Matemáticas IV** · Profesor **Cristian C. Sánchez**
 Ingeniería de Sistemas y Telecomunicaciones · Octavo semestre
@@ -34,15 +34,16 @@ Ingeniería de Sistemas y Telecomunicaciones · Octavo semestre
 | | Módulo | Qué puedes hacer |
 |:-:|---|---|
 | 🏠 | **Inicio** | Portada con el circuito 3D funcionando en vivo e indicadores |
+| 🧩 | **Estación de ensamblaje** | Protoboard 3D: arrastra fuente, R, L, C, interruptor y cables; la topología se analiza (cortos, terminales abiertos, paralelos) y el lazo válido se simula |
 | 🔬 | **Laboratorio 3D** | Rotar, hacer zoom, seleccionar componentes, ver **rayos X** y **despiece interno**, encender, pausar y cambiar la velocidad |
-| 🎬 | **Presentación** | 15 diapositivas animadas en 3D para la sustentación: la cámara se acerca a cada componente y lo abre por dentro |
-| 📐 | **Centro matemático** | Resolución en 13 pasos generada con los valores reales + raíces en el plano complejo |
+| 🎬 | **Presentación** | 23 diapositivas en tres capítulos (uno por integrante): despieces, osciladores mecánicos movidos por q(t) real, comparación de regímenes y aplicaciones 3D (suspensión, instrumento de aguja, cierrapuertas, sintonizador) |
+| 📐 | **Centro matemático** | Resolución animada en 13 pasos (reproducir, pausar, paso a paso, velocidad) mientras la gráfica q(t) se dibuja; vista de documento completo |
 | 📈 | **Gráficas** | q(t), i(t), voltajes, energía, comparación de los 3 regímenes, error de RK4 y exportación CSV |
 | 🧪 | **Experimentos** | 5 experimentos guiados con barridos de R, C, L y fuente; historial guardado |
 | 🏆 | **Desafíos** | *Predice antes de experimentar* + cuestionario con puntaje generado por el motor |
 | 📚 | **Aplicaciones** | Usos reales, analogía mecánica, formulario, glosario, unidades y referencias |
 
-🌗 **Modo claro y oscuro** en toda la aplicación · 📱 **Diseño responsive pensado primero para celular**
+🌗 **Modo claro y oscuro** en toda la aplicación · 📱 **Diseño responsive pensado primero para celular** · 🔎 **Fórmulas interactivas**: toca cualquier variable (L, R, C, q, α, ω₀, ζ…) para ver su significado y unidad
 
 ---
 
@@ -111,7 +112,7 @@ Cada simulación ejecuta validaciones; si alguna falla la interfaz lo advierte.
 | Condiciones iniciales | q(0) = 0, i(0) = 0 |
 
 ```bash
-npm test   # 41 pruebas · Vitest
+npm test   # 55 pruebas · Vitest
 ```
 
 ---
@@ -164,7 +165,8 @@ npm run dev
 | Comando | Para qué |
 |---|---|
 | `npm run dev` | servidor de desarrollo |
-| `npm test` | pruebas del motor |
+| `npm test` | pruebas del motor y de la protoboard |
+| `npx vite-node scripts/guia/generarGuia.ts` | regenera la guía de exposición en PDF |
 | `npm run build` | build de producción |
 | `npm run test:e2e` | pruebas de interfaz (antes: `npx playwright install`) |
 
@@ -183,7 +185,8 @@ Sin backend: experimentos, preferencias e historial se guardan en `localStorage`
 ## 📖 Documentación
 
 - 📘 [Manual de usuario](docs/MANUAL_USUARIO.md)
-- 🎤 [Guion de sustentación](docs/GUION_SUSTENTACION.md)
+- 📕 [Guía de exposición (PDF)](docs/pdf/Guia_Exposicion_ELECTROLAB3D.pdf) — distribución por integrante, guion por diapositiva, desarrollo matemático, variables y preguntas probables. Reemplaza al guion anterior.
+- 🎤 [Guion de sustentación inicial](docs/GUION_SUSTENTACION.md) (versión de 15 diapositivas, conservada como referencia)
 
 ### Referencias
 

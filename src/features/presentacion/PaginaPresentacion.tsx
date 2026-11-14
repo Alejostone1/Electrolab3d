@@ -6,9 +6,11 @@ import type { IdComponente } from '@/engine';
 import { Icono } from '@/components/common/Icono';
 import { BotonTema, Logotipo } from '@/components/layout/Cabecera';
 import { useLaboratorio } from '@/store/useLaboratorio';
-import { CircuitoRLC } from '../laboratorio/scenes/CircuitoRLC';
+import { BLOQUES } from '@/data/exposicion';
+import { POSICIONES } from '../laboratorio/components-3d/geometria';
 import { Escena3D } from '../laboratorio/scenes/Escena3D';
 import { DIAPOSITIVAS } from './diapositivas';
+import { EscenaPresentacion } from './escenas/EscenasPresentacion';
 import './presentacion.css';
 
 const INTERVALO_AUTOMATICO = 15000;
@@ -42,6 +44,19 @@ export default function PaginaPresentacion() {
       const temporizador = setTimeout(() => useLaboratorio.setState({ conectado: true }), 1400);
       return () => clearTimeout(temporizador);
     }
+  }, [diapositiva]);
+
+  // En las diapositivas en vivo la simulación se repite para que la escena nunca quede quieta.
+  useEffect(() => {
+    if (!diapositiva.ejecutar) return;
+    const intervalo = setInterval(() => {
+      const estado = useLaboratorio.getState();
+      if (!estado.reproduciendo) {
+        estado.reiniciar();
+        estado.reproducir();
+      }
+    }, 2200);
+    return () => clearInterval(intervalo);
   }, [diapositiva]);
 
   // Despiece escalonado: primero el acercamiento, luego se abren las piezas.
@@ -98,16 +113,18 @@ export default function PaginaPresentacion() {
           encuadre={diapositiva.encuadre}
           claveEncuadre={indice}
           autoRotar={diapositiva.autoRotar}
+          velocidadGiro={diapositiva.velocidadGiro}
+          foco={diapositiva.foco ? [POSICIONES[diapositiva.foco][0], 0.8, POSICIONES[diapositiva.foco][2]] : null}
           desplazamiento={panelOculto ? [0, 0] : esEscritorio ? [0.2, 0] : [0, 0.22]}
         >
           {(paleta) => (
-            <CircuitoRLC
+            <EscenaPresentacion
+              tipo={diapositiva.escena ?? 'circuito'}
               paleta={paleta}
-              seleccionado={diapositiva.foco ?? null}
-              explotados={despiezado}
+              foco={diapositiva.foco ?? null}
+              despiezados={despiezado}
               rayosX={diapositiva.rayosX ?? false}
-              mostrarCampos
-              mostrarEtiquetas={esEscritorio && !diapositiva.foco}
+              mostrarEtiquetas={esEscritorio && !diapositiva.foco && !diapositiva.capitulo}
             />
           )}
         </Escena3D>
@@ -139,14 +156,24 @@ export default function PaginaPresentacion() {
         {!panelOculto && (
           <motion.article
             key={diapositiva.id}
-            className="diapositiva panel"
+            className={`diapositiva panel ${diapositiva.capitulo ? 'diapositiva--capitulo' : ''}`}
             initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, y: -20, filter: 'blur(6px)' }}
             transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
             aria-live="polite"
           >
-            <span className="etiqueta-seccion">{diapositiva.seccion}</span>
+            <div className="diapositiva__meta">
+              <span className="etiqueta-seccion">{diapositiva.seccion}</span>
+              <span className="diapositiva__expositor">
+                {diapositiva.bloque === null ? 'Expone: todo el equipo' : `Expone: ${BLOQUES[diapositiva.bloque].integrante}`}
+              </span>
+            </div>
+            {diapositiva.capitulo && diapositiva.bloque !== null && (
+              <span className="diapositiva__numeral" aria-hidden="true">
+                {BLOQUES[diapositiva.bloque].numero}
+              </span>
+            )}
             <h1 ref={titulo} className={`diapositiva__titulo ${indice === 0 ? 'diapositiva__titulo--portada' : ''}`} aria-label={diapositiva.titulo}>
               {diapositiva.titulo.split(' ').map((palabra, p) => (
                 <Fragment key={p}>
@@ -182,7 +209,9 @@ export default function PaginaPresentacion() {
           {DIAPOSITIVAS.map((d, k) => (
             <button
               key={d.id}
-              className={`presentacion__punto ${k === indice ? 'presentacion__punto--activo' : ''}`}
+              className={`presentacion__punto ${k === indice ? 'presentacion__punto--activo' : ''} ${
+                k > 0 && DIAPOSITIVAS[k - 1].bloque !== d.bloque ? 'presentacion__punto--bloque' : ''
+              }`}
               onClick={() => ir(k)}
               aria-label={`Ir a ${d.titulo}`}
             />

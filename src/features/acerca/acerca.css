@@ -1,36 +1,32 @@
 .acerca__equipo {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
-  gap: var(--espacio-3);
-  margin-bottom: var(--espacio-5);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  column-gap: var(--espacio-5);
+  margin-bottom: var(--espacio-6);
+  border-top: 1px solid var(--borde-fuerte);
 }
 .integrante {
-  text-align: center;
-  display: grid;
-  justify-items: center;
-  gap: var(--espacio-2);
+  padding: var(--espacio-4) 0;
+  border-bottom: 1px solid var(--borde);
+}
+.integrante__numero {
+  font-size: var(--texto-xs);
+  color: var(--acento);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .integrante h3 {
-  margin: 0;
-  font-size: 1.05rem;
+  margin: var(--espacio-2) 0 var(--espacio-1);
+  font-size: 1.35rem;
 }
 .integrante p {
   margin: 0;
 }
-.integrante__avatar {
-  display: grid;
-  place-items: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--azul), var(--verde));
-  color: #04121f;
-  font-family: var(--fuente-titulos);
-  font-weight: 600;
-  font-size: 1.1rem;
+.integrante--profesor .integrante__numero {
+  color: var(--naranja);
 }
-.integrante--profesor .integrante__avatar {
-  background: linear-gradient(135deg, var(--naranja), var(--violeta));
+.texto-3 {
+  color: var(--texto-3);
 }
 .acerca__columnas {
   display: grid;

@@ -145,3 +145,14 @@ describe('Procedimiento paso a paso', () => {
     }
   });
 });
+
+describe('Procedimiento y símbolos', () => {
+  it('cada paso declara operación y justificación', () => {
+    for (const p of [sub, critico, sobre]) {
+      for (const paso of generarProcedimiento(p, CONDICIONES_INICIALES_REPOSO)) {
+        expect(paso.operacion.length, paso.titulo).toBeGreaterThan(5);
+        expect(paso.justificacion.length, paso.titulo).toBeGreaterThan(10);
+      }
+    }
+  });
+});

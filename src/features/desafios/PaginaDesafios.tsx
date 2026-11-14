@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import gsap from 'gsap';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   calcularParametrosDerivados,
@@ -196,6 +197,55 @@ function RetoConfiguracion({ pregunta, alResponder, respondida }: { pregunta: Pr
   );
 }
 
+/** Dibuja la respuesta del motor progresivamente, como un osciloscopio que barre. */
+function OsciloscopioAnimado({ resultado }: { resultado: NonNullable<Pregunta['resultado']> }) {
+  const [tiempo, setTiempo] = useState(0);
+  useEffect(() => {
+    let id = 0;
+    const inicio = performance.now();
+    const ciclo = (ahora: number) => {
+      const avance = Math.min(1, (ahora - inicio) / 2200);
+      setTiempo(avance * resultado.duracion);
+      if (avance < 1) id = requestAnimationFrame(ciclo);
+    };
+    id = requestAnimationFrame(ciclo);
+    return () => cancelAnimationFrame(id);
+  }, [resultado]);
+  return <Osciloscopio resultado={resultado} tiempo={tiempo} completo={false} alto={150} />;
+}
+
+/** Anillo de puntaje con conteo animado. */
+function AnilloPuntaje({ porcentaje }: { porcentaje: number }) {
+  const numero = useRef<HTMLSpanElement>(null);
+  const arco = useRef<SVGCircleElement>(null);
+  useLayoutEffect(() => {
+    const valor = { v: 0 };
+    const animacion = gsap.to(valor, {
+      v: porcentaje,
+      duration: 1.4,
+      ease: 'power3.out',
+      onUpdate: () => {
+        if (numero.current) numero.current.textContent = `${Math.round(valor.v)}%`;
+        if (arco.current) arco.current.style.strokeDashoffset = String(1 - valor.v / 100);
+      },
+    });
+    return () => {
+      animacion.kill();
+    };
+  }, [porcentaje]);
+  return (
+    <div className="anillo-puntaje">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r="52" className="anillo-puntaje__fondo" />
+        <circle ref={arco} cx="60" cy="60" r="52" pathLength={1} className="anillo-puntaje__arco" />
+      </svg>
+      <span ref={numero} className="anillo-puntaje__numero mono">
+        0%
+      </span>
+    </div>
+  );
+}
+
 function Cuestionario() {
   const [preguntas, setPreguntas] = useState<Pregunta[]>(() => generarCuestionario());
   const [indice, setIndice] = useState(0);
@@ -206,6 +256,16 @@ function Cuestionario() {
   const respondida = pregunta ? pregunta.id in respuestas : false;
   const puntaje = Object.values(respuestas).filter(Boolean).length;
   const terminado = indice >= preguntas.length;
+  // Racha: aciertos consecutivos más recientes.
+  const racha = useMemo(() => {
+    let n = 0;
+    for (const p of [...preguntas].reverse()) {
+      if (!(p.id in respuestas)) continue;
+      if (!respuestas[p.id]) break;
+      n++;
+    }
+    return n;
+  }, [preguntas, respuestas]);
 
   const responder = (correcta: boolean, opcion?: number) => {
     if (respondida) return;
@@ -233,7 +293,7 @@ function Cuestionario() {
     const porcentaje = Math.round((puntaje / preguntas.length) * 100);
     return (
       <div className="tarjeta resultado-final">
-        <span className="resultado-final__porcentaje mono">{porcentaje}%</span>
+        <AnilloPuntaje porcentaje={porcentaje} />
         <h2>
           {puntaje} de {preguntas.length} respuestas correctas
         </h2>
@@ -263,9 +323,23 @@ function Cuestionario() {
         <span className="mono texto-s">
           Pregunta {indice + 1} de {preguntas.length}
         </span>
-        <span className="mono texto-s">Puntaje: {puntaje}</span>
-        <div className="barra-progreso">
-          <span style={{ width: `${(indice / preguntas.length) * 100}%` }} />
+        <span className="mono texto-s">
+          Puntaje: {puntaje}
+          <AnimatePresence>
+            {racha >= 2 && (
+              <motion.span key={racha} className="racha" initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ opacity: 0 }}>
+                racha ×{racha}
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </span>
+        <div className="progreso-segmentos" aria-hidden="true">
+          {preguntas.map((p, k) => (
+            <span
+              key={p.id}
+              className={`progreso-segmentos__item ${p.id in respuestas ? (respuestas[p.id] ? 'progreso-segmentos__item--ok' : 'progreso-segmentos__item--error') : ''} ${k === indice ? 'progreso-segmentos__item--actual' : ''}`}
+            />
+          ))}
         </div>
       </div>
       <AnimatePresence mode="wait">
@@ -273,7 +347,7 @@ function Cuestionario() {
           <span className="etiqueta-seccion">{pregunta.categoria}</span>
           <h2>{pregunta.enunciado}</h2>
           {pregunta.formula && <Formula latex={pregunta.formula} bloque />}
-          {pregunta.resultado && <Osciloscopio resultado={pregunta.resultado} tiempo={pregunta.resultado.duracion} alto={150} />}
+          {pregunta.resultado && <OsciloscopioAnimado resultado={pregunta.resultado} />}
           {pregunta.tipo === 'configuracion' ? (
             <RetoConfiguracion pregunta={pregunta} alResponder={(c) => responder(c)} respondida={respondida} />
           ) : (
@@ -281,16 +355,31 @@ function Cuestionario() {
               {pregunta.opciones.map((opcion, k) => {
                 const estado = respondida ? (k === pregunta.correcta ? 'correcta' : k === eleccion ? 'incorrecta' : '') : '';
                 return (
-                  <button key={opcion} className={`opcion ${estado ? `opcion--${estado}` : ''}`} disabled={respondida} onClick={() => responder(k === pregunta.correcta, k)}>
-                    <span className="opcion__letra mono">{String.fromCharCode(65 + k)}</span>
+                  <motion.button
+                    key={opcion}
+                    className={`opcion ${estado ? `opcion--${estado}` : ''}`}
+                    disabled={respondida}
+                    onClick={() => responder(k === pregunta.correcta, k)}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.12 + k * 0.06 }}
+                    whileHover={respondida ? undefined : { x: 4 }}
+                    whileTap={respondida ? undefined : { scale: 0.98 }}
+                  >
+                    <span className="opcion__letra mono">{estado === 'correcta' ? '✓' : estado === 'incorrecta' ? '✕' : String.fromCharCode(65 + k)}</span>
                     {opcion}
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
           )}
           {respondida && (
-            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={`veredicto ${respuestas[pregunta.id] ? 'veredicto--ok' : 'veredicto--error'}`}>
+            <motion.div
+              initial={{ opacity: 0, y: 14, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+              className={`veredicto ${respuestas[pregunta.id] ? 'veredicto--ok veredicto--celebrar' : 'veredicto--error'}`}
+            >
               <strong>
                 <Icono nombre={respuestas[pregunta.id] ? 'check' : 'x'} /> {respuestas[pregunta.id] ? 'Correcto' : 'Incorrecto'}
               </strong>

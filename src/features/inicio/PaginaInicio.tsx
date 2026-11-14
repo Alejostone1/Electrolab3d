@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Formula } from '@/components/common/Formula';
-import { Icono, type NombreIcono } from '@/components/common/Icono';
+import { BLOQUES } from '@/data/exposicion';
 import { ENLACES, EQUIPO } from '@/data/navegacion';
 import { listarExperimentos, listarHistorialDesafios } from '@/services/almacenamiento';
 import { useLaboratorio } from '@/store/useLaboratorio';
@@ -11,13 +11,13 @@ import { CircuitoRLC } from '../laboratorio/scenes/CircuitoRLC';
 import { Escena3D } from '../laboratorio/scenes/Escena3D';
 import './inicio.css';
 
-const FUNCIONALIDADES: Array<{ icono: NombreIcono; titulo: string; texto: string }> = [
-  { icono: 'cubo', titulo: 'Circuito 3D por dentro', texto: 'Rota, acerca y despieza cada componente: película de carbón, devanado, núcleo, placas y dieléctrico.' },
-  { icono: 'matematicas', titulo: 'Motor matemático real', texto: 'Soluciones analíticas para los tres casos y Runge-Kutta 4, verificados con pruebas automáticas.' },
-  { icono: 'graficas', titulo: 'Observatorio científico', texto: 'Carga, corriente, voltajes y energía en gráficas interactivas exportables a CSV.' },
-  { icono: 'rayo', titulo: 'Todo sincronizado', texto: 'Mover un slider cambia cálculos, clasificación, gráficas y animación 3D al mismo tiempo.' },
-  { icono: 'desafios', titulo: 'Predice y comprueba', texto: 'Desafíos con puntuación: predice el amortiguamiento antes de encender el circuito.' },
-  { icono: 'presentacion', titulo: 'Modo presentación', texto: 'Recorrido guiado en 3D para la sustentación, con animaciones y la simulación en vivo.' },
+const CAPACIDADES: Array<{ titulo: string; texto: string }> = [
+  { titulo: 'Circuito 3D por dentro', texto: 'Rota, acerca y despieza cada componente: película de carbón, devanado, núcleo, placas y dieléctrico.' },
+  { titulo: 'Motor matemático verificado', texto: 'Soluciones analíticas de los tres casos y Runge-Kutta 4, con 55 pruebas automáticas de exactitud.' },
+  { titulo: 'Protoboard real', texto: 'Arma el circuito pieza por pieza: la topología se analiza y se simula con los valores que eliges.' },
+  { titulo: 'Todo sincronizado', texto: 'Un slider cambia a la vez el cálculo, la clasificación, las gráficas y la animación 3D.' },
+  { titulo: 'Fórmulas que responden', texto: 'Toca cualquier variable de una ecuación para ver qué significa, su unidad y su papel.' },
+  { titulo: 'Presentación cinematográfica', texto: 'Recorrido 3D en tres capítulos para la sustentación, con la simulación en vivo.' },
 ];
 
 function Contador({ valor, sufijo = '' }: { valor: number; sufijo?: string }) {
@@ -38,6 +38,12 @@ function Contador({ valor, sufijo = '' }: { valor: number; sufijo?: string }) {
   }, [valor, sufijo]);
   return <span ref={nodo}>0</span>;
 }
+
+const aparecer = (retraso: number) => ({
+  initial: { opacity: 0, y: 22 },
+  animate: { opacity: 1, y: 0 },
+  transition: { delay: retraso, duration: 0.8, ease: [0.2, 0.7, 0.2, 1] as const },
+});
 
 export default function PaginaInicio() {
   const experimentos = listarExperimentos().length;
@@ -62,125 +68,122 @@ export default function PaginaInicio() {
     <div className="inicio">
       <section className="portada">
         <div className="portada__escena" aria-hidden="true">
-          <Escena3D encuadre={{ posicion: [11, 7, 9], objetivo: [1.5, 0, 0] }} autoRotar interactiva={false}>
-            {(paleta) => (
-              <CircuitoRLC paleta={paleta} seleccionado={null} explotados={false} rayosX={false} mostrarCampos mostrarEtiquetas={false} />
-            )}
+          <Escena3D encuadre={{ posicion: [9.2, 6.4, 10.4], objetivo: [-1.4, 0.4, 0] }} autoRotar velocidadGiro={0.0008} interactiva={false}>
+            {(paleta) => <CircuitoRLC paleta={paleta} seleccionado={null} explotados={false} rayosX={false} mostrarCampos mostrarEtiquetas={false} />}
           </Escena3D>
         </div>
-        <div className="portada__velo" />
         <div className="portada__contenido">
-          <motion.span className="etiqueta-seccion" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.p className="portada__antetitulo" {...aparecer(0)}>
             Laboratorio virtual · Matemáticas IV
-          </motion.span>
-          <motion.h1 className="portada__titulo" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.7 }}>
-            ELECTROLAB <span>3D</span>
-          </motion.h1>
-          <motion.p className="portada__texto" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.7 }}>
-            Experimenta con circuitos <b>RLC en serie</b> y descubre cómo una ecuación diferencial de segundo orden describe cada electrón que se mueve,
-            cada oscilación y cada gota de calor.
           </motion.p>
-          <motion.div className="portada__acciones" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.7 }}>
-            <Link to="/laboratorio" className="boton boton--primario boton--grande">
-              <Icono nombre="laboratorio" /> Entrar al laboratorio
-            </Link>
-            <Link to="/presentacion" className="boton boton--grande">
-              <Icono nombre="presentacion" /> Ver presentación
-            </Link>
-          </motion.div>
-          <motion.div className="portada__ecuacion panel" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
+          <motion.h1 className="portada__titulo" {...aparecer(0.08)}>
+            ELECTROLAB<span>3D</span>
+          </motion.h1>
+          <motion.p className="portada__texto" {...aparecer(0.2)}>
+            Un circuito <b>RLC en serie</b> que puedes abrir, medir y reconstruir, y la ecuación diferencial que explica cada electrón que se mueve, cada
+            oscilación y cada gota de calor.
+          </motion.p>
+          <motion.div className="portada__ecuacion" {...aparecer(0.32)}>
             <Formula latex="L\,q''(t) + R\,q'(t) + \frac{1}{C}\,q(t) = E(t)" />
+            <span>Toca una variable</span>
           </motion.div>
+          <motion.div className="portada__acciones" {...aparecer(0.44)}>
+            <Link to="/laboratorio" className="boton boton--primario boton--grande">
+              Entrar al laboratorio
+            </Link>
+            <Link to="/presentacion" className="enlace-flecha">
+              Ver la presentación <span aria-hidden="true">→</span>
+            </Link>
+          </motion.div>
+          <motion.dl className="cifras" {...aparecer(0.6)}>
+            <div>
+              <dt className="mono">
+                <Contador valor={3} />
+              </dt>
+              <dd>regímenes de amortiguamiento</dd>
+            </div>
+            <div>
+              <dt className="mono">
+                <Contador valor={4} />
+              </dt>
+              <dd>señales de fuente</dd>
+            </div>
+            <div>
+              <dt className="mono">
+                <Contador valor={experimentos} />
+              </dt>
+              <dd>experimentos guardados</dd>
+            </div>
+            <div>
+              <dt className="mono">
+                <Contador valor={mejorPuntaje} sufijo="%" />
+              </dt>
+              <dd>mejor puntaje en desafíos</dd>
+            </div>
+          </motion.dl>
         </div>
       </section>
 
       <section className="pagina">
-        <div className="indicadores-inicio">
-          <div className="tarjeta">
-            <strong className="mono">
-              <Contador valor={3} />
-            </strong>
-            <span>tipos de amortiguamiento</span>
-          </div>
-          <div className="tarjeta">
-            <strong className="mono">
-              <Contador valor={4} />
-            </strong>
-            <span>señales de fuente</span>
-          </div>
-          <div className="tarjeta">
-            <strong className="mono">
-              <Contador valor={experimentos} />
-            </strong>
-            <span>experimentos guardados</span>
-          </div>
-          <div className="tarjeta">
-            <strong className="mono">
-              <Contador valor={mejorPuntaje} sufijo="%" />
-            </strong>
-            <span>mejor puntaje en desafíos</span>
-          </div>
-        </div>
-
-        <header className="encabezado-pagina">
-          <span className="etiqueta-seccion">Qué puedes hacer</span>
+        <header className="seccion-editorial">
+          <span className="etiqueta-seccion">Capacidades</span>
           <h2>Ingeniería, matemáticas y diseño en un mismo laboratorio</h2>
-          <p>Cada animación proviene del motor matemático: no hay curvas inventadas ni resultados precalculados.</p>
         </header>
-        <div className="rejilla">
-          {FUNCIONALIDADES.map((f, k) => (
+        <div className="capacidades">
+          {CAPACIDADES.map((c, k) => (
             <motion.article
-              key={f.titulo}
-              className="tarjeta tarjeta--interactiva funcionalidad"
-              initial={{ opacity: 0, y: 24 }}
+              key={c.titulo}
+              className="capacidad"
+              initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
-              transition={{ delay: k * 0.06 }}
+              transition={{ delay: (k % 3) * 0.08, duration: 0.6 }}
             >
-              <span className="funcionalidad__icono">
-                <Icono nombre={f.icono} tamano={22} />
-              </span>
-              <h3>{f.titulo}</h3>
-              <p className="texto-2">{f.texto}</p>
+              <span className="capacidad__numero mono">{String(k + 1).padStart(2, '0')}</span>
+              <h3>{c.titulo}</h3>
+              <p>{c.texto}</p>
             </motion.article>
           ))}
         </div>
 
-        <header className="encabezado-pagina encabezado-pagina--separado">
-          <span className="etiqueta-seccion">Módulos</span>
+        <header className="seccion-editorial">
+          <span className="etiqueta-seccion">Índice</span>
           <h2>Elige por dónde empezar</h2>
         </header>
-        <div className="rejilla modulos">
-          {ENLACES.slice(1).map((enlace) => (
-            <Link key={enlace.ruta} to={enlace.ruta} className="tarjeta tarjeta--interactiva modulo">
-              <Icono nombre={enlace.icono} tamano={26} />
-              <div>
-                <h3>{enlace.nombre}</h3>
-                <p className="texto-2 texto-s">{enlace.descripcion}</p>
-              </div>
-              <Icono nombre="flecha" tamano={18} className="modulo__flecha" />
+        <nav className="indice" aria-label="Módulos">
+          {ENLACES.slice(1).map((enlace, k) => (
+            <Link key={enlace.ruta} to={enlace.ruta} className="indice__fila">
+              <span className="indice__numero mono">{String(k + 1).padStart(2, '0')}</span>
+              <span className="indice__nombre">{enlace.nombre}</span>
+              <span className="indice__descripcion">{enlace.descripcion}</span>
+              <span className="indice__flecha" aria-hidden="true">
+                →
+              </span>
             </Link>
           ))}
-        </div>
+        </nav>
 
-        <section className="equipo-inicio tarjeta">
-          <div>
+        <section className="equipo-editorial">
+          <div className="equipo-editorial__cabecera">
             <span className="etiqueta-seccion">Equipo</span>
             <h2>
-              {EQUIPO.tipo} · {EQUIPO.asignatura}
+              {EQUIPO.tipo} de {EQUIPO.asignatura}
             </h2>
-            <p className="texto-2">
-              {EQUIPO.programa} · {EQUIPO.semestre}. Profesor: <b>{EQUIPO.profesor}</b>.
+            <p>
+              {EQUIPO.programa} · {EQUIPO.semestre}
+              <br />
+              Profesor <b>{EQUIPO.profesor}</b>
             </p>
           </div>
-          <ul>
-            {EQUIPO.integrantes.map((nombre) => (
-              <li key={nombre}>
-                <span className="equipo-inicio__avatar">{nombre.split(' ').map((p) => p[0]).join('')}</span>
-                {nombre}
+          <ol className="equipo-editorial__lista">
+            {BLOQUES.map((b) => (
+              <li key={b.integrante}>
+                <span className="mono">{b.numero}</span>
+                <strong>{b.integrante}</strong>
+                <em>{b.titulo}</em>
               </li>
             ))}
-          </ul>
+          </ol>
         </section>
       </section>
     </div>

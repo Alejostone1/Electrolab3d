@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Icono } from '@/components/common/Icono';
+import { BLOQUES } from '@/data/exposicion';
 import { EQUIPO } from '@/data/navegacion';
 import './acerca.css';
 
@@ -34,25 +35,20 @@ export default function PaginaAcerca() {
       </header>
 
       <section className="acerca__equipo">
-        {EQUIPO.integrantes.map((nombre) => (
-          <article key={nombre} className="tarjeta integrante">
-            <span className="integrante__avatar">{nombre.split(' ').map((p) => p[0]).join('')}</span>
-            <h3>{nombre}</h3>
-            <p className="texto-s texto-2">
-              Estudiante de {EQUIPO.programa}
-              <br />
-              {EQUIPO.semestre}
+        {BLOQUES.map((b) => (
+          <article key={b.integrante} className="integrante">
+            <span className="integrante__numero mono">Bloque {b.numero}</span>
+            <h3>{b.integrante}</h3>
+            <p className="texto-s texto-2">{b.titulo}</p>
+            <p className="texto-xs texto-3">
+              {EQUIPO.programa} · {EQUIPO.semestre}
             </p>
           </article>
         ))}
-        <article className="tarjeta integrante integrante--profesor">
-          <span className="integrante__avatar">
-            <Icono nombre="libro" />
-          </span>
+        <article className="integrante integrante--profesor">
+          <span className="integrante__numero mono">Docente</span>
           <h3>{EQUIPO.profesor}</h3>
-          <p className="texto-s texto-2">
-            Profesor de {EQUIPO.asignatura}
-          </p>
+          <p className="texto-s texto-2">Profesor de {EQUIPO.asignatura}</p>
         </article>
       </section>
 

@@ -19,5 +19,5 @@
     "paths": { "@/*": ["src/*"] },
     "types": ["vitest/globals"]
   },
-  "include": ["src", "tests/mathematics", "tests/electrical", "tests/simulation"]
+  "include": ["src", "tests/mathematics", "tests/electrical", "tests/simulation", "tests/circuitos"]
 }

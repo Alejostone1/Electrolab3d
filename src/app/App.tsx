@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { Cabecera } from '@/components/layout/Cabecera';
 import { PiePagina } from '@/components/layout/PiePagina';
 import { Cargando, Notificaciones } from '@/components/feedback/Feedback';
+import { ExplicadorSimbolos } from '@/components/feedback/ExplicadorSimbolos';
 import { useRelojSimulacion } from '@/hooks/useSimulacion';
 import * as Rutas from './routes';
 
@@ -18,7 +19,7 @@ export function App() {
   useRelojSimulacion();
   const { pathname } = useLocation();
   const pantallaCompleta = pathname.startsWith('/presentacion');
-  const sinPie = pantallaCompleta || pathname.startsWith('/laboratorio');
+  const sinPie = pantallaCompleta || pathname.startsWith('/laboratorio') || pathname.startsWith('/ensamblaje');
 
   return (
     <>
@@ -29,6 +30,7 @@ export function App() {
           <Routes>
             <Route path="/" element={<Rutas.Inicio />} />
             <Route path="/laboratorio" element={<Rutas.Laboratorio />} />
+            <Route path="/ensamblaje" element={<Rutas.Ensamblaje />} />
             <Route path="/experimentos" element={<Rutas.Experimentos />} />
             <Route path="/matematicas" element={<Rutas.Matematicas />} />
             <Route path="/graficas" element={<Rutas.Graficas />} />
@@ -42,6 +44,7 @@ export function App() {
       </main>
       {!sinPie && <PiePagina />}
       <Notificaciones />
+      <ExplicadorSimbolos />
     </>
   );
 }

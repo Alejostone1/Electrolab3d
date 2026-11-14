@@ -9,15 +9,6 @@
 .aplicacion h3 {
   margin: 0;
 }
-.funcionalidad__icono {
-  display: inline-grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  color: var(--acento);
-  background: var(--acento-suave);
-}
 .analogia {
   margin-top: var(--espacio-5);
 }
@@ -71,4 +62,11 @@
 }
 .tabla-desplazable {
   overflow-x: auto;
+}
+
+.aplicacion__numero {
+  font-size: var(--texto-xs);
+  color: var(--acento);
+  padding-bottom: var(--espacio-2);
+  border-bottom: 1px solid var(--borde);
 }

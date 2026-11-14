@@ -15,6 +15,7 @@ import {
 import { Formula } from '@/components/common/Formula';
 import { useLaboratorio } from '@/store/useLaboratorio';
 import { aPrecision } from '@/utils/formato';
+import { ReproductorProcedimiento } from './ReproductorProcedimiento';
 import './matematicas.css';
 
 type Origen = 'laboratorio' | TipoAmortiguamiento;
@@ -63,6 +64,7 @@ export default function PaginaMatematicas() {
   const parametrosLaboratorio = useLaboratorio((s) => s.parametros);
   const tolerancia = useLaboratorio((s) => s.toleranciaCritica);
   const [origen, setOrigen] = useState<Origen>('laboratorio');
+  const [modo, setModo] = useState<'reproductor' | 'documento'>('reproductor');
   const parametros = origen === 'laboratorio' ? parametrosLaboratorio : obtenerPreset(origen).parametros;
   const pasos = useMemo(() => generarProcedimiento(parametros, CONDICIONES_INICIALES_REPOSO, tolerancia), [parametros, tolerancia]);
   const derivados = calcularParametrosDerivados(parametros);
@@ -76,19 +78,35 @@ export default function PaginaMatematicas() {
         <p>Selecciona una configuración y el procedimiento se genera automáticamente con sus valores reales: cada paso explica qué operación se hace y por qué.</p>
       </header>
 
+      <div className="matematicas__barra">
+        <label className="campo matematicas__configuracion">
+          <span className="campo__etiqueta">Configuración</span>
+          <select className="selector" value={origen} onChange={(e) => setOrigen(e.target.value as Origen)}>
+            {OPCIONES.map((o) => (
+              <option key={o.id} value={o.id}>
+                {o.nombre}
+              </option>
+            ))}
+          </select>
+        </label>
+        <span className={`chip chip--${tipo}`}>{NOMBRES_AMORTIGUAMIENTO[tipo]}</span>
+        <div className="pestanas matematicas__modos" role="tablist">
+          <button role="tab" className="pestana" aria-selected={modo === 'reproductor'} onClick={() => setModo('reproductor')}>
+            Resolución animada
+          </button>
+          <button role="tab" className="pestana" aria-selected={modo === 'documento'} onClick={() => setModo('documento')}>
+            Documento completo
+          </button>
+        </div>
+      </div>
+      <p className="texto-s texto-2 matematicas__ayuda">Toca o señala cualquier variable de una fórmula para ver qué significa y en qué unidad se mide.</p>
+
+      {modo === 'reproductor' ? (
+        <ReproductorProcedimiento pasos={pasos} parametros={parametros} tolerancia={tolerancia} />
+      ) : (
       <div className="matematicas__diseno">
         <aside className="matematicas__lateral">
           <div className="tarjeta">
-            <label className="campo">
-              <span className="campo__etiqueta">Configuración</span>
-              <select className="selector" value={origen} onChange={(e) => setOrigen(e.target.value as Origen)}>
-                {OPCIONES.map((o) => (
-                  <option key={o.id} value={o.id}>
-                    {o.nombre}
-                  </option>
-                ))}
-              </select>
-            </label>
             <table className="tabla-datos mono">
               <tbody>
                 <tr>
@@ -113,7 +131,6 @@ export default function PaginaMatematicas() {
                 </tr>
               </tbody>
             </table>
-            <span className={`chip chip--${tipo}`}>{NOMBRES_AMORTIGUAMIENTO[tipo]}</span>
             {origen === 'laboratorio' && (
               <p className="texto-s texto-2 matematicas__nota">
                 Cambia los valores en el <Link to="/laboratorio">laboratorio</Link> y este procedimiento se recalcula.
@@ -154,6 +171,7 @@ export default function PaginaMatematicas() {
           ))}
         </ol>
       </div>
+      )}
     </div>
   );
 }
